@@ -22,8 +22,8 @@
 #include "LEDEffect-RainbowStatic.h"
 
 enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M }; // Emoji Keys
-static const int REACT = 64;
 static const int EMOJI = 128;
+static const int REACT = EMOJI | 64;
 
 enum { PRIMARY, NUMPAD, FUNCTION, BUTTERFLY, BUTTERFLY_FN, EMPTY }; // layers
 
@@ -180,10 +180,15 @@ static void typeEmjoiMacro(int emojiIndex, uint8_t keyState) {
 }
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
-  if ((macroIndex & REACT) > 0) {
-    slackReactMacro(macroIndex & (~REACT), keyState);
-  } else if ((macroIndex & EMOJI) > 0) {
-    typeEmjoiMacro(macroIndex & (~EMOJI), keyState);
+  // 11xxxxxx => Emoji Reaction
+  // 10xxxxxx => Emoji In-line
+  // 0xxxxxxx => Other Macros
+  if ((macroIndex & EMOJI) == EMOJI) {
+    if ((macroIndex & REACT) == REACT) {
+      slackReactMacro(macroIndex & (~REACT), keyState);
+    } else {
+      typeEmjoiMacro(macroIndex & (~EMOJI), keyState);
+    }
   }
   return MACRO_NONE;
 }
