@@ -21,7 +21,7 @@
 #include "Kaleidoscope-SpaceCadet.h"
 #include "LEDEffect-RainbowStatic.h"
 
-enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M }; // Emoji Keys
+enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 
@@ -78,12 +78,12 @@ KEYMAPS(
 
   ), [BUTTERFLY] = KEYMAP_STACKED(
 
-    ___,                        ___, ___,          ___,          ___, ___,          ___,
-    ___,                        ___, M(E_W|EMOJI), M(E_E|EMOJI), ___, M(E_T|EMOJI), ___,
-    ___,                        ___, ___,          ___,          ___, M(E_G|EMOJI), /**/
-    ___,                        ___, ___,          ___,          ___, ___,          ___,
-    ___,                        ___, ___,          ___,          /**/ /**/          /**/
-    ShiftToLayer(BUTTERFLY_FN), /**/ /**/          /**/          /**/ /**/          /**/
+    ___,                        ___, ___,          ___,          ___,          ___,          ___,
+    ___,                        ___, M(E_W|EMOJI), M(E_E|EMOJI), ___,          M(E_T|EMOJI), ___,
+    ___,                        ___, ___,          ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
+    ___,                        ___, ___,          ___,          ___,          ___,          ___,
+    ___,                        ___, ___,          ___,          /**/          /**/          /**/
+    ShiftToLayer(BUTTERFLY_FN), /**/ /**/          /**/          /**/          /**/          /**/
 
     ___,                       ___,          ___,          ___, ___, ___,          ___,
     ___,                       M(E_Y|EMOJI), ___,          ___, ___, M(E_P|EMOJI), ___,
@@ -94,12 +94,12 @@ KEYMAPS(
 
   ), [BUTTERFLY_FN] = KEYMAP_STACKED(
 
-    ___, ___, ___,          ___,          ___, ___,          ___,
-    ___, ___, M(E_W|REACT), M(E_E|REACT), ___, M(E_T|REACT), ___,
-    ___, ___, ___,          ___,          ___, M(E_G|REACT), /**/
-    ___, ___, ___,          ___,          ___, ___,          ___,
-    ___, ___, ___,          ___,          /**/ /**/          /**/
-    ___, /**/ /**/          /**/          /**/ /**/          /**/
+    ___, ___, ___,          ___,          ___,          ___,          ___,
+    ___, ___, M(E_W|REACT), M(E_E|REACT), ___,          M(E_T|REACT), ___,
+    ___, ___, ___,          ___,          M(E_F|REACT), M(E_G|REACT), /**/
+    ___, ___, ___,          ___,          ___,          ___,          ___,
+    ___, ___, ___,          ___,          /**/          /**/          /**/
+    ___, /**/ /**/          /**/          /**/          /**/          /**/
 
     ___, ___,          ___,          ___, ___, ___,          ___,
     ___, M(E_Y|REACT), ___,          ___, ___, M(E_P|REACT), ___,
@@ -158,7 +158,9 @@ static const char* emojiPstr(int emojiIndex) {
   case E_G:
     return PSTR("galaxy");
   case E_M:
-    return PSTR("mirror");
+    return PSTR("thanks-2");
+  case E_F:
+    return PSTR("facepalm");
   }
   return PSTR("");
 }
