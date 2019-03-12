@@ -188,6 +188,9 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
+cRGB overrideColors[LED_COUNT];
+bool overrideColor[LED_COUNT];
+
 class : public kaleidoscope::plugin::LEDMode {
   protected:
     void onActivate(void) {
@@ -195,22 +198,26 @@ class : public kaleidoscope::plugin::LEDMode {
     }
 
     void update(void) {
-      for (int8_t i = 0; i < LED_COUNT; i++) {
-        uint16_t key_hue = rainbow_start_hue + (rainbow_end_hue * 4 / LED_COUNT) * (i / 4);
-        if (key_hue >= 255)          {
-          key_hue -= 255;
-        }
-
-        uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
-        byte value;
-        if (delta > ramp_time) {
-          value = rainbow_value;
+      for (uint8_t i = 0; i < LED_COUNT; i++) {
+        if (overrideColor[i]) {
+          ::LEDControl.setCrgbAt(i, overrideColors[i]);
         } else {
-          value = rainbow_value * delta / ramp_time;
-        }
+          uint16_t key_hue = rainbow_start_hue + (rainbow_end_hue * 4 / LED_COUNT) * (i / 4);
+          if (key_hue >= 255)          {
+            key_hue -= 255;
+          }
 
-        cRGB rainbow = hsvToRgb(key_hue, rainbow_saturation, value);
-        ::LEDControl.setCrgbAt(i, rainbow);
+          uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
+          byte value;
+          if (delta > ramp_time) {
+            value = rainbow_value;
+          } else {
+            value = rainbow_value * delta / ramp_time;
+          }
+
+          cRGB rainbow = hsvToRgb(key_hue, rainbow_saturation, value);
+          ::LEDControl.setCrgbAt(i, rainbow);
+        }
       }
     }
 
@@ -225,8 +232,51 @@ class : public kaleidoscope::plugin::LEDMode {
 
 } ledRainbowStaticEffect;
 
+namespace kaleidoscope {
+  class FocusLedCommand : public Plugin {
+   public:
+    FocusLedCommand() {}
+
+    EventHandlerResult onFocusEvent(const char *command) {
+      if (strcmp_P(command, PSTR("led.set")) == 0) {
+        uint8_t position;
+        cRGB color;
+
+        Focus.read(position);
+        Focus.read(color);
+
+        overrideColors[position] = color;
+        overrideColor[position] = true;
+
+        ::Focus.send(F("Set led"), position, F("to"), color);
+        return EventHandlerResult::EVENT_CONSUMED;
+      } else if (strcmp_P(command, PSTR("led.unset")) == 0) {
+        uint8_t position;
+
+        Focus.read(position);
+
+        overrideColor[position] = false;
+
+        ::Focus.send(F("Unset led"), position);
+        return EventHandlerResult::EVENT_CONSUMED;
+      } else if (strcmp_P(command, PSTR("led.unset-all")) == 0) {
+        for (uint8_t i = 0; i < LED_COUNT; i++) {
+          overrideColor[i] = false;
+        }
+
+        ::Focus.send(F("Unset all leds"));
+        return EventHandlerResult::EVENT_CONSUMED;
+      }
+      return EventHandlerResult::OK;
+    }
+  };
+}
+
+kaleidoscope::FocusLedCommand FocusLedCommand;
+
 KALEIDOSCOPE_INIT_PLUGINS(
   Focus,
+  FocusLedCommand,
   LEDControl,
   ledRainbowStaticEffect,
   SpaceCadet,
