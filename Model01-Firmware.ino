@@ -202,10 +202,14 @@ class : public kaleidoscope::plugin::LEDMode {
         if (overrideColor[i]) {
           ::LEDControl.setCrgbAt(i, overrideColors[i]);
         } else {
-          uint16_t key_hue = rainbow_start_hue + (rainbow_end_hue * 4 / LED_COUNT) * (i / 4);
-          if (key_hue >= 255)          {
-            key_hue -= 255;
+          uint8_t color_index = i / 4;
+          if (i > 36) {
+            color_index -= 2;
+          } else if (i > 26) {
+            color_index -= 1;
           }
+
+          uint8_t key_hue = (rainbow_start_hue + (rainbow_end_hue - rainbow_start_hue) / 14 * color_index) % 255;
 
           uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
           byte value;
