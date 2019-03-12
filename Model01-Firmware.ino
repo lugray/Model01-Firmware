@@ -13,7 +13,6 @@
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-NumPad.h"
 #include "Kaleidoscope-SpaceCadet.h"
-#include "LEDEffect-RainbowStatic.h"
 
 enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F }; // Emoji Keys
 static const int EMOJI = 128;
@@ -189,11 +188,47 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
+class : public kaleidoscope::plugin::LEDMode {
+  protected:
+    void onActivate(void) {
+      activate_millis = Kaleidoscope.millisAtCycleStart();
+    }
+
+    void update(void) {
+      for (int8_t i = 0; i < LED_COUNT; i++) {
+        uint16_t key_hue = rainbow_start_hue + (rainbow_end_hue * 4 / LED_COUNT) * (i / 4);
+        if (key_hue >= 255)          {
+          key_hue -= 255;
+        }
+
+        uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
+        byte value;
+        if (delta > ramp_time) {
+          value = rainbow_value;
+        } else {
+          value = rainbow_value * delta / ramp_time;
+        }
+
+        cRGB rainbow = hsvToRgb(key_hue, rainbow_saturation, value);
+        ::LEDControl.setCrgbAt(i, rainbow);
+      }
+    }
+
+  private:
+    uint16_t rainbow_start_hue = 0;  //  stores 0 to 614
+    uint16_t rainbow_end_hue = 230;  //  stores 0 to 614
+
+    byte rainbow_saturation = 255;
+    byte rainbow_value = 180;
+    uint32_t activate_millis = 0;
+    uint16_t ramp_time = 1000;
+
+} ledRainbowStaticEffect;
 
 KALEIDOSCOPE_INIT_PLUGINS(
   Focus,
   LEDControl,
-  LEDRainbowStaticEffect,
+  ledRainbowStaticEffect,
   SpaceCadet,
   NumPad,
   Macros
@@ -202,10 +237,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
 void setup() {
   Kaleidoscope.setup();
   NumPad.numPadLayer = NUMPAD;
-  LEDRainbowStaticEffect.brightness(150);
-  LEDRainbowStaticEffect.start_hue(0);
-  LEDRainbowStaticEffect.end_hue(230);
-  LEDRainbowStaticEffect.activate();
+  ledRainbowStaticEffect.activate();
   SpaceCadet.map = spaceCadetMap;
 }
 
