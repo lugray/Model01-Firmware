@@ -8,16 +8,10 @@
 
 
 #include "Kaleidoscope.h"
-#include "Kaleidoscope-EEPROM-Settings.h"
-#include "Kaleidoscope-EEPROM-Keymap.h"
 #include "Kaleidoscope-FocusSerial.h"
-#include "Kaleidoscope-MouseKeys.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-NumPad.h"
-#include "Kaleidoscope-Model01-TestMode.h"
-#include "Kaleidoscope-MagicCombo.h"
-#include "Kaleidoscope-USB-Quirks.h"
 #include "Kaleidoscope-SpaceCadet.h"
 #include "LEDEffect-RainbowStatic.h"
 
@@ -62,12 +56,12 @@ KEYMAPS(
 
   ), [FUNCTION] = KEYMAP_STACKED (
 
-    ___,          Key_F1,          Key_F2,      Key_F3,     Key_F4,        Key_F5,           Key_CapsLock,
-    Key_Tab,      ___,             Key_mouseUp, ___,        Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
-    Key_PageUp,   Key_mouseL,      Key_mouseDn, Key_mouseR, Key_mouseBtnL, Key_mouseWarpNW,  /**/
-    Key_PageDown, Key_PrintScreen, Key_Insert,  ___,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
-    ___,          Key_Delete,      ___,         ___,        /**/           /**/              /**/
-    ___,          /**/             /**/         /**/        /**/           /**/              /**/
+    ___,          Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, Key_CapsLock,
+    Key_Tab,      ___,             ___,        ___,    ___,    ___,    ___,
+    Key_PageUp,   ___,             ___,        ___,    ___,    ___,    /**/
+    Key_PageDown, Key_PrintScreen, Key_Insert, ___,    ___,    ___,    ___,
+    ___,          Key_Delete,      ___,        ___,    /**/    /**/    /**/
+    ___,          /**/             /**/        /**/    /**/    /**/    /**/
 
     Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,               Key_F8,                   Key_F9,                   Key_F10,          Key_F11,
     Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket, Key_RightCurlyBracket,    Key_LeftBracket,          Key_RightBracket, Key_F12,
@@ -195,36 +189,14 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
-enum {
-  // Toggle between Boot (6-key rollover; for BIOSes and early boot) and NKRO
-  // mode.
-  COMBO_TOGGLE_NKRO_MODE
-};
-
-static void toggleKeyboardProtocol(uint8_t combo_index) {
-  USBQuirks.toggleKeyboardProtocol();
-}
-
-USE_MAGIC_COMBOS({.action = toggleKeyboardProtocol,
-                  // Left Fn + Esc + Shift
-                  .keys = { R3C6, R2C6, R3C7 }
-                 });
 
 KALEIDOSCOPE_INIT_PLUGINS(
-  EEPROMSettings,
-  EEPROMKeymap,
   Focus,
-  FocusSettingsCommand,
-  FocusEEPROMCommand,
-  TestMode,
   LEDControl,
   LEDRainbowStaticEffect,
   SpaceCadet,
   NumPad,
-  Macros,
-  MouseKeys,
-  MagicCombo,
-  USBQuirks
+  Macros
 );
 
 void setup() {
@@ -235,7 +207,6 @@ void setup() {
   LEDRainbowStaticEffect.end_hue(230);
   LEDRainbowStaticEffect.activate();
   SpaceCadet.map = spaceCadetMap;
-  EEPROMKeymap.setup(5, EEPROMKeymap.Mode::EXTEND);
 }
 
 void loop() {
