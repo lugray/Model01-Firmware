@@ -11,7 +11,6 @@
 #include "Kaleidoscope-FocusSerial.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
-#include "Kaleidoscope-NumPad.h"
 #include "Kaleidoscope-SpaceCadet.h"
 #include "Kaleidoscope-TopsyTurvy.h"
 
@@ -193,6 +192,29 @@ cRGB overrideColors[LED_COUNT];
 bool overrideColor[LED_COUNT];
 
 class : public kaleidoscope::plugin::LEDMode {
+  public:
+    kaleidoscope::EventHandlerResult afterEachCycle() {
+      // partially-borrowed from
+      //  - https://github.com/bjc/Kaleidoscope-LayerHighlighter
+      //  - https://github.com/burke/dotfiles/blob/master/Documents/Arduino/Model01-Firmware/firmware.ino
+      uint8_t layer = Layer.top();
+      if (layer == PRIMARY) {
+        return kaleidoscope::EventHandlerResult::OK;
+      }
+      cRGB off = {0, 0, 0};
+      for (uint8_t r = 0; r < ROWS; r++) {
+        for (uint8_t c = 0; c < COLS; c++) {
+          Key k = Layer.lookupOnActiveLayer(r, c);
+          Key layer_key = Layer.getKey(layer, r, c);
+          // r:0;c:0 is program, which we don't want to show as a layer key really.
+          if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
+            LEDControl.setCrgbAt(r, c, off);
+          }
+        }
+      }
+      return kaleidoscope::EventHandlerResult::OK;
+    }
+
   protected:
     void onActivate(void) {
       activate_millis = Kaleidoscope.millisAtCycleStart();
@@ -285,14 +307,12 @@ KALEIDOSCOPE_INIT_PLUGINS(
   LEDControl,
   ledRainbowStaticEffect,
   SpaceCadet,
-  NumPad,
   TopsyTurvy,
   Macros
 );
 
 void setup() {
   Kaleidoscope.setup();
-  NumPad.numPadLayer = NUMPAD;
   ledRainbowStaticEffect.activate();
   SpaceCadet.map = spaceCadetMap;
 }
