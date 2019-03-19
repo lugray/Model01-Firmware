@@ -14,7 +14,7 @@
 #include "Kaleidoscope-SpaceCadet.h"
 #include "Kaleidoscope-TopsyTurvy.h"
 
-enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F }; // Emoji Keys
+enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F, E_PLUS }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 
@@ -79,7 +79,7 @@ KEYMAPS(
     ShiftToLayer(BUTTERFLY_FN), /**/ /**/          /**/          /**/          /**/          /**/
 
     ___,                       ___,          ___,          ___, ___, ___,          ___,
-    ___,                       M(E_Y|EMOJI), ___,          ___, ___, M(E_P|EMOJI), ___,
+    ___,                       M(E_Y|EMOJI), ___,          ___, ___, M(E_P|EMOJI), M(E_PLUS|EMOJI),
     /**/                       M(E_H|EMOJI), M(E_J|EMOJI), ___, ___, ___,          ___,
     ___,                       ___,          M(E_M|EMOJI), ___, ___, ___,          ___,
     ___,                       ___,          ___,          ___, /**/ /**/          /**/
@@ -95,7 +95,7 @@ KEYMAPS(
     ___, /**/ /**/          /**/          /**/          /**/          /**/
 
     ___, ___,          ___,          ___, ___, ___,          ___,
-    ___, M(E_Y|REACT), ___,          ___, ___, M(E_P|REACT), ___,
+    ___, M(E_Y|REACT), ___,          ___, ___, M(E_P|REACT), M(E_PLUS|REACT),
     /**/ M(E_H|REACT), M(E_J|REACT), ___, ___, ___,          ___,
     ___, ___,          M(E_M|REACT), ___, ___, ___,          ___,
     ___, ___,          ___,          ___, /**/ /**/          /**/
@@ -134,8 +134,10 @@ static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
 
 static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
-  case E_T:
+  case E_PLUS:
     return PSTR("thumbsup");
+  case E_T:
+    return PSTR("trollface");
   case E_H:
     return PSTR("heart");
   case E_J:
