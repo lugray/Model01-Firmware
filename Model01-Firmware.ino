@@ -18,7 +18,7 @@ enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F, E_PLUS }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 
-enum { PRIMARY, NUMPAD, FUNCTION, BUTTERFLY, BUTTERFLY_FN, EMPTY }; // layers
+enum { PRIMARY, NUMPAD, FUNCTION, BUTTERFLY, BUTTERFLY_FN, STOCK_QW, STOCK_FN }; // layers
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
@@ -101,21 +101,37 @@ KEYMAPS(
     ___, ___,          ___,          ___, /**/ /**/          /**/
     ___  /**/          /**/          /**/ /**/ /**/          /**/
 
-  ), [EMPTY] = KEYMAP_STACKED(
+  ), [STOCK_QW] = KEYMAP_STACKED(
 
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, /**/
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, /**/ /**/ /**/
-    ___, /**/ /**/ /**/ /**/ /**/ /**/
+    ___,                    Key_1,         Key_2,       Key_3,         Key_4, Key_5, Key_LeftAlt,
+    Key_Backtick,           Key_Q,         Key_W,       Key_E,         Key_R, Key_T, Key_Tab,
+    Key_PageUp,             Key_A,         Key_S,       Key_D,         Key_F, Key_G, /**/
+    Key_PageDown,           Key_Z,         Key_X,       Key_C,         Key_V, Key_B, Key_Escape,
+    Key_LeftControl,        Key_Backspace, Key_LeftGui, Key_LeftShift, /**/   /**/   /**/
+    ShiftToLayer(STOCK_FN), /**/           /**/         /**/           /**/   /**/   /**/
 
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    /**/ ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, /**/ /**/ /**/
-    ___  /**/ /**/ /**/ /**/ /**/ /**/
+    ___,                   Key_6,       Key_7,        Key_8,            Key_9,      Key_0,         LockLayer(NUMPAD),
+    Key_Enter,             Key_Y,       Key_U,        Key_I,            Key_O,      Key_P,         Key_Equals,
+    /**/                   Key_H,       Key_J,        Key_K,            Key_L,      Key_Semicolon, Key_Quote,
+    Key_RightAlt,          Key_N,       Key_M,        Key_Comma,        Key_Period, Key_Slash,     Key_Minus,
+    Key_RightShift,        Key_LeftAlt, Key_Spacebar, Key_RightControl, /**/        /**/           /**/
+    ShiftToLayer(STOCK_FN) /**/         /**/          /**/              /**/        /**/           /**/
+
+  ), [STOCK_FN] =  KEYMAP_STACKED(
+
+    ___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, Key_CapsLock,
+    Key_Tab,  ___,             ___,        ___,    ___,    ___,    ___,
+    Key_Home, ___,             ___,        ___,    ___,    ___,    /**/
+    Key_End,  Key_PrintScreen, Key_Insert, ___,    ___,    ___,    ___,
+    ___,      Key_Delete,      ___,        ___,    /**/    /**/    /**/
+    ___,      /**/             /**/        /**/    /**/    /**/    /**/
+
+    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
+    Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
+     /**/                       Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
+    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
+    ___,                        ___,                    Key_Enter,                ___,                      /**/             /**/              /**/
+    ___                         /**/                    /**/                      /**/                      /**/             /**/              /**/
 
   )
 )
@@ -128,6 +144,7 @@ static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
   {Key_RightGui,     Key_RightCurlyBracket, spaceCadetTimeout},
   {Key_LeftControl,  Key_LeftBracket,       spaceCadetTimeout},
   {Key_RightControl, Key_RightBracket,      spaceCadetTimeout},
+  {Key_LeftAlt,      LockLayer(STOCK_QW),   spaceCadetTimeout},
   SPACECADET_MAP_END
 };
 
@@ -193,6 +210,8 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
 cRGB overrideColors[LED_COUNT];
 bool overrideColor[LED_COUNT];
 
+#define TK(rv, cv) (r==rv && c == cv) ||
+
 class : public kaleidoscope::plugin::LEDMode {
   public:
     kaleidoscope::EventHandlerResult afterEachCycle() {
@@ -203,14 +222,26 @@ class : public kaleidoscope::plugin::LEDMode {
       if (layer == PRIMARY) {
         return kaleidoscope::EventHandlerResult::OK;
       }
-      cRGB off = {0, 0, 0};
+      cRGB off = CRGB(0, 0, 0);
+      cRGB blue = CRGB(0, 0, 255);
+      cRGB red = CRGB(255, 0, 0);
       for (uint8_t r = 0; r < ROWS; r++) {
         for (uint8_t c = 0; c < COLS; c++) {
-          Key k = Layer.lookupOnActiveLayer(r, c);
-          Key layer_key = Layer.getKey(layer, r, c);
-          // r:0;c:0 is program, which we don't want to show as a layer key really.
-          if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
-            LEDControl.setCrgbAt(r, c, off);
+          if (Layer.isActive(STOCK_QW)) {
+            if (TK(0, 2) TK(0, 4) TK(0, 11) TK(0, 13) false) {
+              LEDControl.setCrgbAt(r, c, blue);
+            } else if (TK(3, 1) TK(2, 2) TK(2, 3) TK(2, 4) TK(3, 5) TK(3, 10) TK(2, 11) TK(2, 12) TK(2, 13) TK(3, 14) false) {
+              LEDControl.setCrgbAt(r, c, red);
+            } else {
+              LEDControl.setCrgbAt(r, c, off);
+            }
+          } else {
+            Key k = Layer.lookupOnActiveLayer(r, c);
+            Key layer_key = Layer.getKey(layer, r, c);
+            // r:0;c:0 is program, which we don't want to show as a layer key really.
+            if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
+              LEDControl.setCrgbAt(r, c, off);
+            }
           }
         }
       }
