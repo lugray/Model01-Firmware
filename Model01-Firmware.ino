@@ -23,12 +23,12 @@ enum { PRIMARY, NUMPAD, FUNCTION, BUTTERFLY, BUTTERFLY_FN, STOCK_QW, STOCK_FN };
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,                    Key_1,         Key_2,       Key_3,         Key_4, Key_5, Key_LeftAlt,
-    Key_Backtick,           Key_Q,         Key_W,       Key_E,         Key_R, Key_T, Key_Tab,
-    Key_Home,               Key_A,         Key_S,       Key_D,         Key_F, Key_G, /**/
-    Key_End,                Key_Z,         Key_X,       Key_C,         Key_V, Key_B, Key_Escape,
-    Key_LeftControl,        Key_Backspace, Key_LeftGui, Key_LeftShift, /**/   /**/   /**/
-    ShiftToLayer(FUNCTION), /**/           /**/         /**/           /**/   /**/   /**/
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       Key_LeftAlt,
+    Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
+    Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
+    Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_Escape,
+    /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
+    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(FUNCTION),
 
     LCTRL(LSHIFT(LALT(LGUI(Key_S)))), Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(NUMPAD),
     Key_Enter,                        Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
@@ -43,8 +43,8 @@ KEYMAPS(
     ___, ___, ___, ___, ___, ___, ___,
     ___, ___, ___, ___, ___, ___, /**/
     ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, /**/ /**/ /**/
-    ___, /**/ /**/ /**/ /**/ /**/ /**/
+    /**/ /**/ /**/ ___, ___, ___, ___,
+    /**/ /**/ /**/ /**/ /**/ /**/ ___,
 
     ___, ___, Key_Keypad7, Key_Keypad8,   Key_Keypad9,        Key_KeypadSubtract, ___,
     ___, ___, Key_Keypad4, Key_Keypad5,   Key_Keypad6,        Key_KeypadAdd,      ___,
@@ -55,12 +55,12 @@ KEYMAPS(
 
   ), [FUNCTION] = KEYMAP_STACKED (
 
-    ___,                     Key_F1,                       Key_F2,                       Key_F3,                        Key_F4, Key_F5, Key_CapsLock,
-    Key_Tab,                 ___,                          LCTRL(LSHIFT(Key_UpArrow)),   ___,                           ___,    ___,    ___,
-    Key_PageUp,              LCTRL(LSHIFT(Key_LeftArrow)), LCTRL(LSHIFT(Key_DownArrow)), LCTRL(LSHIFT(Key_RightArrow)), ___,    ___,    /**/
-    Key_PageDown,            Key_PrintScreen,              Key_Insert,                   ___,                           ___,    ___,    ___,
-    ___,                     Key_Delete,                   ___,                          ___,                           /**/    /**/    /**/
-    ShiftToLayer(BUTTERFLY), /**/                          /**/                          /**/                           /**/    /**/    /**/
+    ___,          Key_F1,                       Key_F2,                       Key_F3,                        Key_F4,     Key_F5, Key_CapsLock,
+    Key_Tab,      ___,                          LCTRL(LSHIFT(Key_UpArrow)),   ___,                           ___,        ___,    ___,
+    Key_PageUp,   LCTRL(LSHIFT(Key_LeftArrow)), LCTRL(LSHIFT(Key_DownArrow)), LCTRL(LSHIFT(Key_RightArrow)), ___,        ___,    /**/
+    Key_PageDown, Key_PrintScreen,              Key_Insert,                   ___,                           ___,        ___,    ___,
+    /**/          /**/                          /**/                          ___,                           Key_Delete, ___,    ___,
+    /**/          /**/                          /**/                          /**/                           /**/        /**/    ShiftToLayer(BUTTERFLY),
 
     Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,               Key_F8,                   Key_F9,                   Key_F10,          Key_F11,
     LCTRL(LSHIFT(Key_Enter)),   Consumer_ScanNextTrack, Key_LeftCurlyBracket, Key_RightCurlyBracket,    Key_LeftBracket,          Key_RightBracket, Key_F12,
@@ -71,12 +71,12 @@ KEYMAPS(
 
   ), [BUTTERFLY] = KEYMAP_STACKED(
 
-    ___,                        ___, ___,          ___,          ___,          ___,          ___,
-    ___,                        ___, M(E_W|EMOJI), M(E_E|EMOJI), ___,          M(E_T|EMOJI), ___,
-    ___,                        ___, ___,          ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
-    ___,                        ___, ___,          ___,          ___,          ___,          ___,
-    ___,                        ___, ___,          ___,          /**/          /**/          /**/
-    ShiftToLayer(BUTTERFLY_FN), /**/ /**/          /**/          /**/          /**/          /**/
+    ___, ___, ___,          ___,          ___,          ___,          ___,
+    ___, ___, M(E_W|EMOJI), M(E_E|EMOJI), ___,          M(E_T|EMOJI), ___,
+    ___, ___, ___,          ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
+    ___, ___, ___,          ___,          ___,          ___,          ___,
+    /**/ /**/ /**/          ___,          ___,          ___,          ___,
+    /**/ /**/ /**/          /**/          /**/          /**/          ShiftToLayer(BUTTERFLY_FN),
 
     ___,                       ___,          ___,          ___, ___, ___,          ___,
     ___,                       M(E_Y|EMOJI), ___,          ___, ___, M(E_P|EMOJI), M(E_PLUS|EMOJI),
@@ -91,8 +91,8 @@ KEYMAPS(
     ___, ___, M(E_W|REACT), M(E_E|REACT), ___,          M(E_T|REACT), ___,
     ___, ___, ___,          ___,          M(E_F|REACT), M(E_G|REACT), /**/
     ___, ___, ___,          ___,          ___,          ___,          ___,
-    ___, ___, ___,          ___,          /**/          /**/          /**/
-    ___, /**/ /**/          /**/          /**/          /**/          /**/
+    /**/ /**/ /**/          ___,          ___,          ___,          ___,
+    /**/ /**/ /**/          /**/          /**/          /**/          ___,
 
     ___, ___,          ___,          ___, ___, ___,          ___,
     ___, M(E_Y|REACT), ___,          ___, ___, M(E_P|REACT), M(E_PLUS|REACT),
@@ -103,12 +103,12 @@ KEYMAPS(
 
   ), [STOCK_QW] = KEYMAP_STACKED(
 
-    ___,                    Key_1,         Key_2,       Key_3,         Key_4, Key_5, Key_LeftAlt,
-    Key_Backtick,           Key_Q,         Key_W,       Key_E,         Key_R, Key_T, Key_Tab,
-    Key_PageUp,             Key_A,         Key_S,       Key_D,         Key_F, Key_G, /**/
-    Key_PageDown,           Key_Z,         Key_X,       Key_C,         Key_V, Key_B, Key_Escape,
-    Key_LeftControl,        Key_Backspace, Key_LeftGui, Key_LeftShift, /**/   /**/   /**/
-    ShiftToLayer(STOCK_FN), /**/           /**/         /**/           /**/   /**/   /**/
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       Key_LeftAlt,
+    Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
+    Key_PageUp,   Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
+    Key_PageDown, Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_Escape,
+    /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
+    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(STOCK_FN),
 
     ___,                   Key_6,       Key_7,        Key_8,            Key_9,      Key_0,         LockLayer(NUMPAD),
     Key_Enter,             Key_Y,       Key_U,        Key_I,            Key_O,      Key_P,         Key_Equals,
@@ -119,12 +119,12 @@ KEYMAPS(
 
   ), [STOCK_FN] =  KEYMAP_STACKED(
 
-    ___,      Key_F1,          Key_F2,     Key_F3, Key_F4, Key_F5, Key_CapsLock,
-    Key_Tab,  ___,             ___,        ___,    ___,    ___,    ___,
-    Key_Home, ___,             ___,        ___,    ___,    ___,    /**/
-    Key_End,  Key_PrintScreen, Key_Insert, ___,    ___,    ___,    ___,
-    ___,      Key_Delete,      ___,        ___,    /**/    /**/    /**/
-    ___,      /**/             /**/        /**/    /**/    /**/    /**/
+    ___,      Key_F1,          Key_F2,     Key_F3, Key_F4,     Key_F5, Key_CapsLock,
+    Key_Tab,  ___,             ___,        ___,    ___,        ___,    ___,
+    Key_Home, ___,             ___,        ___,    ___,        ___,    /**/
+    Key_End,  Key_PrintScreen, Key_Insert, ___,    ___,        ___,    ___,
+    /**/      /**/             /**/        ___,    Key_Delete, ___,    ___,
+    /**/      /**/             /**/        /**/    /**/        /**/    ___,
 
     Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
     Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
