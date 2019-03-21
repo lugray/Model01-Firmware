@@ -114,7 +114,7 @@ KEYMAPS(
     Key_Enter,             Key_Y,       Key_U,        Key_I,            Key_O,      Key_P,         Key_Equals,
     /**/                   Key_H,       Key_J,        Key_K,            Key_L,      Key_Semicolon, Key_Quote,
     Key_RightAlt,          Key_N,       Key_M,        Key_Comma,        Key_Period, Key_Slash,     Key_Minus,
-    Key_RightShift,        Key_LeftAlt, Key_Spacebar, Key_RightControl, /**/        /**/           /**/
+    Key_RightShift,        Key_RightAlt, Key_Spacebar, Key_RightControl, /**/        /**/           /**/
     ShiftToLayer(STOCK_FN) /**/         /**/          /**/              /**/        /**/           /**/
 
   ), [STOCK_FN] =  KEYMAP_STACKED(
@@ -142,6 +142,7 @@ static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
   {Key_RightShift,   Key_RightParen,        spaceCadetTimeout},
   {Key_LeftGui,      Key_LeftCurlyBracket,  spaceCadetTimeout},
   {Key_RightGui,     Key_RightCurlyBracket, spaceCadetTimeout},
+  {Key_RightAlt,     Key_RightCurlyBracket, spaceCadetTimeout},
   {Key_LeftControl,  Key_LeftBracket,       spaceCadetTimeout},
   {Key_RightControl, Key_RightBracket,      spaceCadetTimeout},
   {Key_LeftAlt,      LockLayer(STOCK_QW),   spaceCadetTimeout},
