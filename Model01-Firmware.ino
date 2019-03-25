@@ -55,15 +55,15 @@ KEYMAPS(
 
   ), [FUNCTION] = KEYMAP_STACKED (
 
-    ___,          Key_F1,                       Key_F2,                       Key_F3,                        Key_F4,     Key_F5, Key_CapsLock,
-    Key_Tab,      ___,                          LCTRL(LSHIFT(Key_UpArrow)),   ___,                           ___,        ___,    ___,
-    Key_PageUp,   LCTRL(LSHIFT(Key_LeftArrow)), LCTRL(LSHIFT(Key_DownArrow)), LCTRL(LSHIFT(Key_RightArrow)), ___,        ___,    /**/
-    Key_PageDown, Key_PrintScreen,              Key_Insert,                   ___,                           ___,        ___,    ___,
-    /**/          /**/                          /**/                          ___,                           Key_Delete, ___,    ___,
-    /**/          /**/                          /**/                          /**/                           /**/        /**/    ShiftToLayer(BUTTERFLY),
+    ___,          Key_F1,                     Key_F2,                     Key_F3,                      Key_F4,     Key_F5, Key_CapsLock,
+    Key_Tab,      ___,                        LCTRL(LALT(Key_UpArrow)),   ___,                         ___,        ___,    ___,
+    Key_PageUp,   LCTRL(LALT(Key_LeftArrow)), LCTRL(LALT(Key_DownArrow)), LCTRL(LALT(Key_RightArrow)), ___,        ___,    /**/
+    Key_PageDown, Key_PrintScreen,            Key_Insert,                 ___,                         ___,        ___,    ___,
+    /**/          /**/                        /**/                        ___,                         Key_Delete, ___,    ___,
+    /**/          /**/                        /**/                        /**/                         /**/        /**/    ShiftToLayer(BUTTERFLY),
 
     Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,               Key_F8,                   Key_F9,                   Key_F10,          Key_F11,
-    LCTRL(LSHIFT(Key_Enter)),   Consumer_ScanNextTrack, Key_LeftCurlyBracket, Key_RightCurlyBracket,    Key_LeftBracket,          Key_RightBracket, Key_F12,
+    LCTRL(LALT(Key_Enter)),     Consumer_ScanNextTrack, Key_LeftCurlyBracket, Key_RightCurlyBracket,    Key_LeftBracket,          Key_RightBracket, Key_F12,
     /**/                        Key_LeftArrow,          Key_DownArrow,        Key_UpArrow,              Key_RightArrow,           ___,              ___,
     ShiftToLayer(BUTTERFLY_FN), ___,                    Consumer_Mute,        Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash,    Key_Pipe,
     ___,                        ___,                    Key_Enter,            ___,                      /**/                      /**/              /**/
