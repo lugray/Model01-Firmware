@@ -38,5 +38,8 @@ each_led do |i|
   sleep 0.02
   focus.command('led.unset', i)
 end
+focus.command('led.value', 50)
+focus.command('led.setrc', 0, 2, 255, 255, 255)
+sleep 2
 focus.command('led.unset-all')
 

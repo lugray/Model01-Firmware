@@ -248,6 +248,13 @@ class : public kaleidoscope::plugin::LEDMode {
       }
       return kaleidoscope::EventHandlerResult::OK;
     }
+    void setValue(byte v) {
+      rainbow_value = v;
+    }
+
+    void resetValue() {
+      rainbow_value = 180;
+    }
 
   protected:
     void onActivate(void) {
@@ -311,7 +318,32 @@ namespace kaleidoscope {
 
         ::Focus.send(F("Set led"), position, F("to"), color);
         return EventHandlerResult::EVENT_CONSUMED;
-      } else if (strcmp_P(command, PSTR("led.unset")) == 0) {
+      } else if (strcmp_P(command, PSTR("led.setrc")) == 0) {
+        uint8_t position;
+        byte r;
+        byte c;
+        cRGB color;
+
+        Focus.read(r);
+        Focus.read(c);
+        Focus.read(color);
+
+        position = KeyboardHardware.getLedIndex(r, c);
+        overrideColors[position] = color;
+        overrideColor[position] = true;
+
+        ::Focus.send(F("Set led"), position, F("to"), color);
+        return EventHandlerResult::EVENT_CONSUMED;
+      } else if (strcmp_P(command, PSTR("led.value")) == 0) {
+        byte value;
+
+        Focus.read(value);
+
+        ledRainbowStaticEffect.setValue(value);
+
+        ::Focus.send(F("Set base led value to"), value);
+        return EventHandlerResult::EVENT_CONSUMED;
+       } else if (strcmp_P(command, PSTR("led.unset")) == 0) {
         uint8_t position;
 
         Focus.read(position);
@@ -324,6 +356,7 @@ namespace kaleidoscope {
         for (uint8_t i = 0; i < LED_COUNT; i++) {
           overrideColor[i] = false;
         }
+        ledRainbowStaticEffect.resetValue();
 
         ::Focus.send(F("Unset all leds"));
         return EventHandlerResult::EVENT_CONSUMED;
