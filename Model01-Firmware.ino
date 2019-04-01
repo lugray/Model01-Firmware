@@ -6,7 +6,6 @@
 #define BUILD_INFORMATION "locally built"
 #endif
 
-
 #include "Kaleidoscope.h"
 #include "Kaleidoscope-FocusSerial.h"
 #include "Kaleidoscope-Macros.h"
@@ -153,7 +152,7 @@ static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
 static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
   case E_PLUS:
-    return PSTR("thumbsup");
+    return PSTR("+1");
   case E_T:
     return PSTR("trollface");
   case E_H:
