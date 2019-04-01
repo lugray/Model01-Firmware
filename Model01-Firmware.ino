@@ -12,12 +12,17 @@
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-SpaceCadet.h"
 #include "Kaleidoscope-TopsyTurvy.h"
+#include "Kaleidoscope-Ranges.h"
+#include "StackArray.h"
 
 enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F, E_PLUS }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
+enum { RPN_TOGGLE }; // Non-emoji macros
 
 enum { PRIMARY, NUMPAD, FUNCTION, BUTTERFLY, BUTTERFLY_FN, STOCK_QW, STOCK_FN }; // layers
+
+#define Key_CalcRPN Key(kaleidoscope::ranges::SAFE_START + 1)
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
@@ -57,7 +62,7 @@ KEYMAPS(
     ___,          Key_F1,                     Key_F2,                     Key_F3,                      Key_F4,     Key_F5, Key_CapsLock,
     Key_Tab,      ___,                        LCTRL(LALT(Key_UpArrow)),   ___,                         ___,        ___,    ___,
     Key_PageUp,   LCTRL(LALT(Key_LeftArrow)), LCTRL(LALT(Key_DownArrow)), LCTRL(LALT(Key_RightArrow)), ___,        ___,    /**/
-    Key_PageDown, Key_PrintScreen,            Key_Insert,                 ___,                         ___,        ___,    ___,
+    Key_PageDown, Key_PrintScreen,            Key_Insert,                 ___,                         ___,        ___,    Key_CalcRPN,
     /**/          /**/                        /**/                        ___,                         Key_Delete, ___,    ___,
     /**/          /**/                        /**/                        /**/                         /**/        /**/    ShiftToLayer(BUTTERFLY),
 
@@ -148,6 +153,191 @@ static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
   SPACECADET_MAP_END
 };
 
+#define DIGIT(digit, key_state) \
+  if (mapped_key == (Key_ ## digit)) { \
+    if (keyToggledOn(key_state)) { \
+      handleDigit(digit); \
+    } \
+    return EventHandlerResult::EVENT_CONSUMED; \
+  }
+
+#define CASETYPE(ch) \
+  case ' ## ch ## ': \
+    Macros.type(PSTR(" ## ch ## ")); \
+    break;
+
+namespace kaleidoscope {
+  class CalcRPN: public kaleidoscope::Plugin {
+    public:
+      EventHandlerResult onKeyswitchEvent(Key &mapped_key, byte row, byte col, uint8_t key_state) {
+        if (mapped_key == Key_CalcRPN) {
+          if (keyToggledOn(key_state)) {
+            toggle();
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        if (!active) {
+          return EventHandlerResult::OK;
+        }
+        if (mapped_key == Key_LeftShift || mapped_key == Key_RightShift) {
+          is_shifted_ = keyIsPressed(key_state);
+        }
+        if (!is_shifted_) {
+          DIGIT(0, key_state)
+          DIGIT(1, key_state)
+          DIGIT(2, key_state)
+          DIGIT(3, key_state)
+          DIGIT(4, key_state)
+          DIGIT(5, key_state)
+          DIGIT(6, key_state)
+          DIGIT(7, key_state)
+          DIGIT(8, key_state)
+          DIGIT(9, key_state)
+        }
+        if ((mapped_key == Key_Equals && is_shifted_) || mapped_key == Key_KeypadAdd) {
+          if (keyToggledOn(key_state)) {
+            commit();
+            if (s.count() >= 2) {
+              int64_t a = s.pop();
+              int64_t b = s.pop();
+              s.push(b+a);
+            }
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        if ((mapped_key == Key_Minus && !is_shifted_) || mapped_key == Key_KeypadSubtract) {
+          if (keyToggledOn(key_state)) {
+            commit();
+            if (s.count() >= 2) {
+              int64_t a = s.pop();
+              int64_t b = s.pop();
+              s.push(b-a);
+            }
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        if ((mapped_key == Key_8 && is_shifted_) || mapped_key == Key_KeypadMultiply) {
+          if (keyToggledOn(key_state)) {
+            commit();
+            if (s.count() >= 2) {
+              int64_t a = s.pop();
+              int64_t b = s.pop();
+              s.push(b*a);
+            }
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        if ((mapped_key == Key_Slash && !is_shifted_) || mapped_key == Key_KeypadDivide) {
+          if (keyToggledOn(key_state)) {
+            commit();
+            if (s.count() >= 2) {
+              int64_t a = s.pop();
+              int64_t b = s.pop();
+              s.push(b/a);
+            }
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        if (mapped_key == Key_Enter) {
+          if (keyToggledOn(key_state)) {
+            commit();
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        if (mapped_key == Key_Equals && !is_shifted_) {
+          if (keyToggledOn(key_state)) {
+            commit();
+            if (!s.isEmpty()) {
+              output(s.pop());
+            }
+          }
+          return EventHandlerResult::EVENT_CONSUMED;
+        }
+        return EventHandlerResult::OK;
+      }
+
+      void toggle() {
+        active = !active;
+        commit();
+        if (!active && !s.isEmpty()) {
+          output(s.pop());
+        }
+      }
+
+    private:
+      void handleDigit(int n) {
+        current *= 10;
+        current += n;
+        in_progress = true;
+      }
+
+      void commit() {
+        if (in_progress) {
+          s.push(current);
+          current = 0;
+          in_progress = false;
+        }
+      }
+
+      void output(int64_t n) {
+        bool old_active = active;
+        active = false;
+        if (n < 0) {
+          Macros.type(PSTR("-"));
+          n = -n;
+        }
+        int64_t div = 1;
+        while (div <= n) {
+          div *= 10;
+        }
+        div /= 10;
+        while (div > 0) {
+          int d = (n / div) % 10;
+          div /= 10;
+          switch(d) {
+            case 0:
+              Macros.type(PSTR("0"));
+              break;
+            case 1:
+              Macros.type(PSTR("1"));
+              break;
+            case 2:
+              Macros.type(PSTR("2"));
+              break;
+            case 3:
+              Macros.type(PSTR("3"));
+              break;
+            case 4:
+              Macros.type(PSTR("4"));
+              break;
+            case 5:
+              Macros.type(PSTR("5"));
+              break;
+            case 6:
+              Macros.type(PSTR("6"));
+              break;
+            case 7:
+              Macros.type(PSTR("7"));
+              break;
+            case 8:
+              Macros.type(PSTR("8"));
+              break;
+            case 9:
+              Macros.type(PSTR("9"));
+              break;
+          }
+        }
+        active = old_active;
+      }
+
+      bool active = false;
+      bool is_shifted_ = false;
+      bool in_progress = false;
+      int64_t current = 0;
+      StackArray <int64_t> s;
+  };
+}
+kaleidoscope::CalcRPN CalcRPN;
 
 static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
@@ -203,6 +393,11 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     } else {
       typeEmjoiMacro(macroIndex & (~EMOJI), keyState);
     }
+  }
+  switch(macroIndex) {
+    case RPN_TOGGLE:
+      CalcRPN.toggle();
+      break;
   }
   return MACRO_NONE;
 }
@@ -374,6 +569,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   ledRainbowStaticEffect,
   SpaceCadet,
   TopsyTurvy,
+  CalcRPN,
   Macros
 );
 
