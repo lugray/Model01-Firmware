@@ -10,7 +10,7 @@
 #include "Kaleidoscope-FocusSerial.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
-#include "Kaleidoscope-SpaceCadet.h"
+#include "Kaleidoscope-Qukeys.h"
 #include "Kaleidoscope-TopsyTurvy.h"
 #include "Kaleidoscope-Ranges.h"
 #include "StackArray.h"
@@ -28,19 +28,19 @@ enum { PRIMARY, NUMPAD, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       Key_LeftAlt,
-    Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
-    Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
-    Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_Escape,
-    /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
-    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(L_FN),
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,                Key_LeftAlt,
+    Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,                Key_Tab,
+    Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,                /**/
+    Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,                Key_Escape,
+    /**/          /**/   /**/   Key_LeftBracket, Key_Backspace, Key_LeftCurlyBracket, Key_LeftParen,
+    /**/          /**/   /**/   /**/             /**/           /**/                  ShiftToLayer(L_FN),
 
-    Key_Sleep,         Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(NUMPAD),
-    Key_Enter,         Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
-    /**/               Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
-    TOPSY(Minus),      Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
-    Key_RightShift,    Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
-    ShiftToLayer(L_FN) /**/          /**/          /**/              /**/        /**/              /**/
+    Key_Sleep,         Key_6,                 Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(NUMPAD),
+    Key_Enter,         Key_Y,                 Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
+    /**/               Key_H,                 Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
+    TOPSY(Minus),      Key_N,                 Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
+    Key_RightParen,    Key_RightCurlyBracket, Key_Spacebar, Key_RightBracket, /**/        /**/              /**/
+    ShiftToLayer(L_FN) /**/                   /**/          /**/              /**/        /**/              /**/
 
   ), [NUMPAD] = KEYMAP_STACKED(
 
@@ -141,18 +141,6 @@ KEYMAPS(
   )
 )
 
-static const int spaceCadetTimeout = 250;
-static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
-  {Key_LeftShift,    Key_LeftParen,         spaceCadetTimeout},
-  {Key_RightShift,   Key_RightParen,        spaceCadetTimeout},
-  {Key_LeftGui,      Key_LeftCurlyBracket,  spaceCadetTimeout},
-  {Key_RightGui,     Key_RightCurlyBracket, spaceCadetTimeout},
-  {Key_RightAlt,     Key_RightCurlyBracket, spaceCadetTimeout},
-  {Key_LeftControl,  Key_LeftBracket,       spaceCadetTimeout},
-  {Key_RightControl, Key_RightBracket,      spaceCadetTimeout},
-  {Key_LeftAlt,      LockLayer(STOCK_QW),   spaceCadetTimeout},
-  SPACECADET_MAP_END
-};
 
 #define DIGIT(digit, key_state) \
   if (mapped_key == (Key_ ## digit)) { \
@@ -566,20 +554,30 @@ namespace kaleidoscope {
 kaleidoscope::FocusLedCommand FocusLedCommand;
 
 KALEIDOSCOPE_INIT_PLUGINS(
+  Qukeys,
   Focus,
   FocusLedCommand,
   LEDControl,
   ledRainbowStaticEffect,
-  SpaceCadet,
   TopsyTurvy,
   CalcRPN,
   Macros
 );
 
 void setup() {
+  QUKEYS(
+    kaleidoscope::plugin::Qukey(PRIMARY, 0, 7, Key_LeftControl),
+    kaleidoscope::plugin::Qukey(PRIMARY, 2, 7, Key_LeftGui),
+    kaleidoscope::plugin::Qukey(PRIMARY, 3, 7, Key_LeftShift),
+    kaleidoscope::plugin::Qukey(PRIMARY, 3, 8, Key_RightShift),
+    kaleidoscope::plugin::Qukey(PRIMARY, 2, 8, Key_RightGui),
+    kaleidoscope::plugin::Qukey(PRIMARY, 0, 8, Key_RightControl),
+
+    kaleidoscope::plugin::Qukey(PRIMARY, 2, 6, Key_LeftAlt),
+    kaleidoscope::plugin::Qukey(PRIMARY, 2, 9, Key_RightAlt)
+  )
   Kaleidoscope.setup();
   ledRainbowStaticEffect.activate();
-  SpaceCadet.map = spaceCadetMap;
 }
 
 void loop() {
