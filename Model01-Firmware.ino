@@ -20,9 +20,10 @@ static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 enum { RPN_TOGGLE }; // Non-emoji macros
 
-enum { PRIMARY, NUMPAD, FUNCTION, BUTTERFLY, BUTTERFLY_FN, STOCK_QW, STOCK_FN }; // layers
+enum { PRIMARY, NUMPAD, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 
 #define Key_CalcRPN Key(kaleidoscope::ranges::SAFE_START + 1)
+#define Key_Sleep LCTRL(LSHIFT(LALT(LGUI(Key_S))))
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
@@ -32,14 +33,14 @@ KEYMAPS(
     Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
     Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_Escape,
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
-    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(FUNCTION),
+    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(L_FN),
 
-    LCTRL(LSHIFT(LALT(LGUI(Key_S)))), Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(NUMPAD),
-    Key_Enter,                        Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
-    /**/                              Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
-    ShiftToLayer(BUTTERFLY),          Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
-    Key_RightShift,                   Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
-    ShiftToLayer(FUNCTION)            /**/          /**/          /**/              /**/        /**/              /**/
+    Key_Sleep,               Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(NUMPAD),
+    Key_Enter,               Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
+    /**/                     Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
+    ShiftToLayer(BUTTERFLY), Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
+    Key_RightShift,          Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
+    ShiftToLayer(L_FN)       /**/          /**/          /**/              /**/        /**/              /**/
 
   ), [NUMPAD] = KEYMAP_STACKED(
 
@@ -57,39 +58,39 @@ KEYMAPS(
     ___, ___, ___,   ___,        /**/                /**/                /**/
     ___  /**/ /**/   /**/        /**/                /**/                /**/
 
-  ), [FUNCTION] = KEYMAP_STACKED (
+  ), [L_FN] = KEYMAP_STACKED (
 
     ___,          Key_F1,                     Key_F2,                     Key_F3,                      Key_F4,     Key_F5, Key_CapsLock,
     Key_Tab,      ___,                        LCTRL(LALT(Key_UpArrow)),   ___,                         ___,        ___,    ___,
     Key_PageUp,   LCTRL(LALT(Key_LeftArrow)), LCTRL(LALT(Key_DownArrow)), LCTRL(LALT(Key_RightArrow)), ___,        ___,    /**/
     Key_PageDown, Key_PrintScreen,            Key_Insert,                 ___,                         ___,        ___,    Key_CalcRPN,
     /**/          /**/                        /**/                        ___,                         Key_Delete, ___,    ___,
-    /**/          /**/                        /**/                        /**/                         /**/        /**/    ShiftToLayer(BUTTERFLY),
+    /**/          /**/                        /**/                        /**/                         /**/        /**/    ShiftToLayer(L_EMOJI),
 
-    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,               Key_F8,                   Key_F9,                   Key_F10,          Key_F11,
-    LCTRL(LALT(Key_Enter)),     Consumer_ScanNextTrack, Key_LeftCurlyBracket, Key_RightCurlyBracket,    Key_LeftBracket,          Key_RightBracket, Key_F12,
-    /**/                        Key_LeftArrow,          Key_DownArrow,        Key_UpArrow,              Key_RightArrow,           ___,              ___,
-    ShiftToLayer(BUTTERFLY_FN), ___,                    Consumer_Mute,        Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash,    Key_Pipe,
-    ___,                        ___,                    Key_Enter,            ___,                      /**/                      /**/              /**/
-    ShiftToLayer(BUTTERFLY),    /**/                    /**/                  /**/                      /**/                      /**/              /**/
+    ___,                    Key_F6,        Key_F7,        Key_F8,                   Key_F9,                   Key_F10,       Key_F11,
+    LCTRL(LALT(Key_Enter)), ___,           ___,           ___,                      ___,                      ___,           Key_F12,
+    /**/                    Key_LeftArrow, Key_DownArrow, Key_UpArrow,              Key_RightArrow,           ___,           ___,
+    ShiftToLayer(L_REACT),  ___,           Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash, Key_Pipe,
+    ___,                    ___,           Key_Enter,     ___,                      /**/                      /**/           /**/
+    ShiftToLayer(L_EMOJI),  /**/           /**/           /**/                      /**/                      /**/           /**/
 
-  ), [BUTTERFLY] = KEYMAP_STACKED(
+  ), [L_EMOJI] = KEYMAP_STACKED(
 
     ___, ___, ___,          ___,          ___,          ___,          ___,
     ___, ___, M(E_W|EMOJI), M(E_E|EMOJI), ___,          M(E_T|EMOJI), ___,
     ___, ___, ___,          ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
     ___, ___, ___,          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          ___,          ___,          ___,          ___,
-    /**/ /**/ /**/          /**/          /**/          /**/          ShiftToLayer(BUTTERFLY_FN),
+    /**/ /**/ /**/          /**/          /**/          /**/          ShiftToLayer(L_REACT),
 
     ___,                       ___,          ___,          ___, ___, ___,          ___,
     ___,                       M(E_Y|EMOJI), ___,          ___, ___, M(E_P|EMOJI), M(E_PLUS|EMOJI),
     /**/                       M(E_H|EMOJI), M(E_J|EMOJI), ___, ___, ___,          ___,
     ___,                       ___,          M(E_M|EMOJI), ___, ___, ___,          ___,
     ___,                       ___,          ___,          ___, /**/ /**/          /**/
-    ShiftToLayer(BUTTERFLY_FN) /**/          /**/          /**/ /**/ /**/          /**/
+    ShiftToLayer(L_REACT) /**/          /**/          /**/ /**/ /**/          /**/
 
-  ), [BUTTERFLY_FN] = KEYMAP_STACKED(
+  ), [L_REACT] = KEYMAP_STACKED(
 
     ___, ___, ___,          ___,          ___,          ___,          ___,
     ___, ___, M(E_W|REACT), M(E_E|REACT), ___,          M(E_T|REACT), ___,
