@@ -15,7 +15,7 @@
 #include "Kaleidoscope-Ranges.h"
 #include "StackArray.h"
 
-enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F, E_PLUS }; // Emoji Keys
+enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F, E_PLUS, E_S }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 enum { RPN_TOGGLE }; // Non-emoji macros
@@ -78,7 +78,7 @@ KEYMAPS(
 
     ___, ___, ___,          ___,          ___,          ___,          ___,
     ___, ___, M(E_W|EMOJI), M(E_E|EMOJI), ___,          M(E_T|EMOJI), ___,
-    ___, ___, ___,          ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
+    ___, ___, M(E_S|EMOJI), ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
     ___, ___, ___,          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          /**/          /**/          /**/          ShiftToLayer(L_REACT),
@@ -94,7 +94,7 @@ KEYMAPS(
 
     ___, ___, ___,          ___,          ___,          ___,          ___,
     ___, ___, M(E_W|REACT), M(E_E|REACT), ___,          M(E_T|REACT), ___,
-    ___, ___, ___,          ___,          M(E_F|REACT), M(E_G|REACT), /**/
+    ___, ___, M(E_S|REACT), ___,          M(E_F|REACT), M(E_G|REACT), /**/
     ___, ___, ___,          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          /**/          /**/          /**/          ___,
@@ -364,6 +364,8 @@ static const char* emojiPstr(int emojiIndex) {
     return PSTR("thanks-2");
   case E_F:
     return PSTR("facepalm");
+  case E_S:
+    return PSTR("shrug");
   }
   return PSTR("");
 }
