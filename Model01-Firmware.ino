@@ -258,7 +258,7 @@ class : public kaleidoscope::plugin::LEDMode {
     }
 
     void resetValue() {
-      rainbow_value = 180;
+      rainbow_value = default_value;
     }
 
   protected:
@@ -285,6 +285,10 @@ class : public kaleidoscope::plugin::LEDMode {
           if (delta > ramp_time) {
             value = rainbow_value;
           } else {
+            if (KeyboardHardware.isKeyswitchPressed(R0C6)) { // LED
+              default_value = 80;
+              rainbow_value = 80;
+            }
             value = rainbow_value * delta / ramp_time;
           }
 
@@ -299,7 +303,8 @@ class : public kaleidoscope::plugin::LEDMode {
     uint16_t rainbow_end_hue = 230;  //  stores 0 to 614
 
     byte rainbow_saturation = 255;
-    byte rainbow_value = 180;
+    byte default_value = 180;
+    byte rainbow_value = default_value;
     uint32_t activate_millis = 0;
     uint16_t ramp_time = 1000;
 
