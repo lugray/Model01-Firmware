@@ -15,7 +15,7 @@
 #include "Kaleidoscope-Ranges.h"
 #include "StackArray.h"
 
-enum { E_T, E_H, E_J, E_E, E_W, E_P, E_Y, E_G, E_M, E_F, E_PLUS, E_S }; // Emoji Keys
+enum { E_E, E_F, E_G, E_H, E_J, E_M, E_P, E_PLUS, E_S, E_T, E_W, E_Y }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 
@@ -155,30 +155,18 @@ KEYMAPS(
 
 static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
-  case E_PLUS:
-    return PSTR("+1");
-  case E_T:
-    return PSTR("trollface");
-  case E_H:
-    return PSTR("heart");
-  case E_J:
-    return PSTR("joy");
-  case E_E:
-    return PSTR("eyes");
-  case E_W:
-    return PSTR("wave");
-  case E_P:
-    return PSTR("point_up");
-  case E_Y:
-    return PSTR("tada");
-  case E_G:
-    return PSTR("galaxy");
-  case E_M:
-    return PSTR("thanks-2");
-  case E_F:
-    return PSTR("facepalm");
-  case E_S:
-    return PSTR("shrug");
+    case E_E: return PSTR("eyes");
+    case E_F: return PSTR("facepalm");
+    case E_G: return PSTR("galaxy");
+    case E_H: return PSTR("heart");
+    case E_J: return PSTR("joy");
+    case E_M: return PSTR("thanks-2");
+    case E_P: return PSTR("point_up");
+    case E_PLUS: return PSTR("+1");
+    case E_S: return PSTR("shrug");
+    case E_T: return PSTR("trollface");
+    case E_W: return PSTR("wave");
+    case E_Y: return PSTR("tada");
   }
   return PSTR("");
 }
