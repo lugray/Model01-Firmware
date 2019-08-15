@@ -15,7 +15,7 @@
 #include "Kaleidoscope-Ranges.h"
 #include "StackArray.h"
 
-enum { E_C, E_E, E_F, E_G, E_H, E_J, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
+enum { E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 
@@ -81,12 +81,12 @@ KEYMAPS(
     /**/ /**/ /**/          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          /**/          /**/          /**/          ShiftToLayer(L_REACT),
 
-    ___,                  ___,          ___,          ___, ___, ___,          ___,
-    ___,                  M(E_Y|EMOJI), M(E_U|EMOJI), ___, ___, M(E_P|EMOJI), M(E_PLUS|EMOJI),
-    /**/                  M(E_H|EMOJI), M(E_J|EMOJI), ___, ___, ___,          ___,
-    ___,                  ___,          M(E_M|EMOJI), ___, ___, ___,          ___,
-    ___,                  ___,          ___,          ___, /**/ /**/          /**/
-    ShiftToLayer(L_REACT) /**/          /**/          /**/ /**/ /**/          /**/
+    ___,                  ___,          ___,          ___,          ___,          ___,          ___,
+    ___,                  M(E_Y|EMOJI), M(E_U|EMOJI), M(E_I|EMOJI), ___,          M(E_P|EMOJI), M(E_PLUS|EMOJI),
+    /**/                  M(E_H|EMOJI), M(E_J|EMOJI), ___,          M(E_L|EMOJI), ___,          ___,
+    ___,                  ___,          M(E_M|EMOJI), ___,          ___,          ___,          ___,
+    ___,                  ___,          ___,          ___,          /**/          /**/          /**/
+    ShiftToLayer(L_REACT) /**/          /**/          /**/          /**/          /**/          /**/
 
   ), [L_REACT] = KEYMAP_STACKED(
 
@@ -97,12 +97,12 @@ KEYMAPS(
     /**/ /**/ /**/          ___,          ___,          ___,          ___,
     /**/ /**/ /**/          /**/          /**/          /**/          ___,
 
-    ___, ___,          ___,          ___, ___, ___,          ___,
-    ___, M(E_Y|REACT), M(E_U|REACT), ___, ___, M(E_P|REACT), M(E_PLUS|REACT),
-    /**/ M(E_H|REACT), M(E_J|REACT), ___, ___, ___,          ___,
-    ___, ___,          M(E_M|REACT), ___, ___, ___,          ___,
-    ___, ___,          ___,          ___, /**/ /**/          /**/
-    ___  /**/          /**/          /**/ /**/ /**/          /**/
+    ___, ___,          ___,          ___,          ___,          ___,          ___,
+    ___, M(E_Y|REACT), M(E_U|REACT), M(E_I|REACT), ___,          M(E_P|REACT), M(E_PLUS|REACT),
+    /**/ M(E_H|REACT), M(E_J|REACT), ___,          M(E_L|REACT), ___,          ___,
+    ___, ___,          M(E_M|REACT), ___,          ___,          ___,          ___,
+    ___, ___,          ___,          ___,          /**/          /**/          /**/
+    ___  /**/          /**/          /**/          /**/          /**/          /**/
 
   ), [STOCK_QW] = KEYMAP_STACKED(
 
@@ -157,17 +157,19 @@ static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
     case E_C: return PSTR("claps");
     case E_E: return PSTR("eyes");
-    case E_F: return PSTR("facepalm");
+    case E_F: return PSTR("picard2");
     case E_G: return PSTR("galaxy");
-    case E_H: return PSTR("heart");
+    case E_H: return PSTR("purple_heart");
+    case E_I: return PSTR("incredulous_angry_woman");
     case E_J: return PSTR("joy");
+    case E_L: return PSTR("iamlooking");
     case E_M: return PSTR("thanks-2");
     case E_P: return PSTR("point_up");
-    case E_PLUS: return PSTR("+1");
+    case E_PLUS: return PSTR("wizard-thumb");
     case E_S: return PSTR("shrug");
     case E_T: return PSTR("trollface");
     case E_U: return PSTR("dancing_unicorn");
-    case E_W: return PSTR("wave");
+    case E_W: return PSTR("blobwave");
     case E_Y: return PSTR("tada");
   }
   return PSTR("");
