@@ -18,6 +18,8 @@
 enum { E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
+#define E(n) Key(n|EMOJI, KEY_FLAGS | SYNTHETIC | IS_MACRO)
+#define R(n) Key(n|REACT, KEY_FLAGS | SYNTHETIC | IS_MACRO)
 
 enum { PRIMARY, NUMPAD, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 
@@ -74,35 +76,35 @@ KEYMAPS(
 
   ), [L_EMOJI] = KEYMAP_STACKED(
 
-    ___, ___, ___,          ___,          ___,          ___,          ___,
-    ___, ___, M(E_W|EMOJI), M(E_E|EMOJI), ___,          M(E_T|EMOJI), ___,
-    ___, ___, M(E_S|EMOJI), ___,          M(E_F|EMOJI), M(E_G|EMOJI), /**/
-    ___, ___, ___,          M(E_C|EMOJI), ___,          ___,          ___,
-    /**/ /**/ /**/          ___,          ___,          ___,          ___,
-    /**/ /**/ /**/          /**/          /**/          /**/          ShiftToLayer(L_REACT),
+    ___, ___, ___,    ___,    ___,    ___,    ___,
+    ___, ___, E(E_W), E(E_E), ___,    E(E_T), ___,
+    ___, ___, E(E_S), ___,    E(E_F), E(E_G), /**/
+    ___, ___, ___,    E(E_C), ___,    ___,    ___,
+    /**/ /**/ /**/    ___,    ___,    ___,    ___,
+    /**/ /**/ /**/    /**/    /**/    /**/    ShiftToLayer(L_REACT),
 
-    ___,                  ___,          ___,          ___,          ___,          ___,          ___,
-    ___,                  M(E_Y|EMOJI), M(E_U|EMOJI), M(E_I|EMOJI), ___,          M(E_P|EMOJI), M(E_PLUS|EMOJI),
-    /**/                  M(E_H|EMOJI), M(E_J|EMOJI), ___,          M(E_L|EMOJI), ___,          ___,
-    ___,                  ___,          M(E_M|EMOJI), ___,          ___,          ___,          ___,
-    ___,                  ___,          ___,          ___,          /**/          /**/          /**/
-    ShiftToLayer(L_REACT) /**/          /**/          /**/          /**/          /**/          /**/
+    ___,                  ___,    ___,    ___,    ___,    ___,    ___,
+    ___,                  E(E_Y), E(E_U), E(E_I), ___,    E(E_P), E(E_PLUS),
+    /**/                  E(E_H), E(E_J), ___,    E(E_L), ___,    ___,
+    ___,                  ___,    E(E_M), ___,    ___,    ___,    ___,
+    ___,                  ___,    ___,    ___,    /**/    /**/    /**/
+    ShiftToLayer(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
 
   ), [L_REACT] = KEYMAP_STACKED(
 
-    ___, ___, ___,          ___,          ___,          ___,          ___,
-    ___, ___, M(E_W|REACT), M(E_E|REACT), ___,          M(E_T|REACT), ___,
-    ___, ___, M(E_S|REACT), ___,          M(E_F|REACT), M(E_G|REACT), /**/
-    ___, ___, ___,          M(E_C|REACT), ___,          ___,          ___,
-    /**/ /**/ /**/          ___,          ___,          ___,          ___,
-    /**/ /**/ /**/          /**/          /**/          /**/          ___,
+    ___, ___, ___,    ___,    ___,    ___,    ___,
+    ___, ___, R(E_W), R(E_E), ___,    R(E_T), ___,
+    ___, ___, R(E_S), ___,    R(E_F), R(E_G), /**/
+    ___, ___, ___,    R(E_C), ___,    ___,    ___,
+    /**/ /**/ /**/    ___,    ___,    ___,    ___,
+    /**/ /**/ /**/    /**/    /**/    /**/    ___,
 
-    ___, ___,          ___,          ___,          ___,          ___,          ___,
-    ___, M(E_Y|REACT), M(E_U|REACT), M(E_I|REACT), ___,          M(E_P|REACT), M(E_PLUS|REACT),
-    /**/ M(E_H|REACT), M(E_J|REACT), ___,          M(E_L|REACT), ___,          ___,
-    ___, ___,          M(E_M|REACT), ___,          ___,          ___,          ___,
-    ___, ___,          ___,          ___,          /**/          /**/          /**/
-    ___  /**/          /**/          /**/          /**/          /**/          /**/
+    ___, ___,    ___,    ___,    ___,    ___,    ___,
+    ___, R(E_Y), R(E_U), R(E_I), ___,    R(E_P), R(E_PLUS),
+    /**/ R(E_H), R(E_J), ___,    R(E_L), ___,    ___,
+    ___, ___,    R(E_M), ___,    ___,    ___,    ___,
+    ___, ___,    ___,    ___,    /**/    /**/    /**/
+    ___  /**/    /**/    /**/    /**/    /**/    /**/
 
   ), [STOCK_QW] = KEYMAP_STACKED(
 
