@@ -181,8 +181,9 @@ static const char* emojiPstr(int emojiIndex) {
 static void slackReactMacro(int emojiIndex, uint8_t keyState) {
   if (keyToggledOn(keyState)) {
     Macros.play(MACRO(D(LeftGui), D(LeftShift), T(Backslash), U(LeftShift), U(LeftGui)));
+    Macros.play(MACRO(W(255)));
     Macros.type(emojiPstr(emojiIndex));
-    Macros.play(MACRO(W(255), W(255), T(Enter)));
+    Macros.play(MACRO(W(255), T(Enter)));
   }
 }
 
