@@ -299,7 +299,7 @@ class : public kaleidoscope::plugin::LEDMode {
     uint16_t rainbow_end_hue = 230;  //  stores 0 to 614
 
     byte rainbow_saturation = 255;
-    byte default_value = 180;
+    byte default_value = 255;
     byte rainbow_value = default_value;
     uint32_t activate_millis = 0;
     uint16_t ramp_time = 1000;
