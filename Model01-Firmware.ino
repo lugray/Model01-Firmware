@@ -231,18 +231,18 @@ class : public kaleidoscope::plugin::LEDMode {
         for (uint8_t c = 0; c < COLS; c++) {
           if (Layer.isActive(STOCK_QW)) {
             if (TK(0, 2) TK(0, 4) TK(0, 11) TK(0, 13) false) {
-              LEDControl.setCrgbAt(r, c, blue);
+              LEDControl.setCrgbAt(KeyAddr(r, c), blue);
             } else if (TK(3, 1) TK(2, 2) TK(2, 3) TK(2, 4) TK(3, 5) TK(3, 10) TK(2, 11) TK(2, 12) TK(2, 13) TK(3, 14) false) {
-              LEDControl.setCrgbAt(r, c, red);
+              LEDControl.setCrgbAt(KeyAddr(r, c), red);
             } else {
-              LEDControl.setCrgbAt(r, c, off);
+              LEDControl.setCrgbAt(KeyAddr(r, c), off);
             }
           } else {
-            Key k = Layer.lookupOnActiveLayer(r, c);
-            Key layer_key = Layer.getKey(layer, r, c);
+            Key k = Layer.lookupOnActiveLayer(KeyAddr(r, c));
+            Key layer_key = Layer.getKey(layer, KeyAddr(r, c));
             // r:0;c:0 is program, which we don't want to show as a layer key really.
             if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
-              LEDControl.setCrgbAt(r, c, off);
+              LEDControl.setCrgbAt(KeyAddr(KeyAddr(r, c)), off);
             }
           }
         }
@@ -334,7 +334,7 @@ namespace kaleidoscope {
         Focus.read(c);
         Focus.read(color);
 
-        position = KeyboardHardware.getLedIndex(r, c);
+        position = KeyboardHardware.getLedIndex(KeyAddr(r, c));
         overrideColors[position] = color;
         overrideColor[position] = true;
 
@@ -386,15 +386,15 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
 void setup() {
   QUKEYS(
-    kaleidoscope::plugin::Qukey(PRIMARY, 0, 7, Key_LeftControl),
-    kaleidoscope::plugin::Qukey(PRIMARY, 2, 7, Key_LeftGui),
-    kaleidoscope::plugin::Qukey(PRIMARY, 3, 7, Key_LeftShift),
-    kaleidoscope::plugin::Qukey(PRIMARY, 3, 8, Key_RightShift),
-    kaleidoscope::plugin::Qukey(PRIMARY, 2, 8, Key_RightGui),
-    kaleidoscope::plugin::Qukey(PRIMARY, 0, 8, Key_RightControl),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(0, 7), Key_LeftControl),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(2, 7), Key_LeftGui),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(3, 7), Key_LeftShift),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(3, 8), Key_RightShift),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(2, 8), Key_RightGui),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(0, 8), Key_RightControl),
 
-    kaleidoscope::plugin::Qukey(PRIMARY, 2, 6, Key_LeftAlt),
-    kaleidoscope::plugin::Qukey(PRIMARY, 2, 9, Key_RightAlt)
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(2, 6), Key_LeftAlt),
+    kaleidoscope::plugin::Qukey(PRIMARY, KeyAddr(2, 9), Key_RightAlt)
   )
   Kaleidoscope.setup();
   ledRainbowStaticEffect.activate();
