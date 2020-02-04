@@ -21,7 +21,7 @@ static const int REACT = EMOJI | 64;
 #define E(n) Key(n|EMOJI, KEY_FLAGS | SYNTHETIC | IS_MACRO)
 #define R(n) Key(n|REACT, KEY_FLAGS | SYNTHETIC | IS_MACRO)
 
-enum { PRIMARY, NUMPAD, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
+enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 
 #define Key_Sleep LCTRL(LSHIFT(LALT(LGUI(Key_S))))
 
@@ -35,28 +35,12 @@ KEYMAPS(
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
     /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(L_FN),
 
-    Key_Sleep,         Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(NUMPAD),
+    Key_Sleep,         Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(STOCK_QW),
     Key_Enter,         Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
     /**/               Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
     Key_RightAlt,      Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
     Key_RightShift,    Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
     ShiftToLayer(L_FN) /**/          /**/          /**/              /**/        /**/              /**/
-
-  ), [NUMPAD] = KEYMAP_STACKED(
-
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, /**/
-    ___, ___, ___, ___, ___, ___, ___,
-    /**/ /**/ /**/ ___, ___, ___, ___,
-    /**/ /**/ /**/ /**/ /**/ /**/ ___,
-
-    ___, ___, Key_7, Key_8,      Key_9,              Key_KeypadSubtract, ___,
-    ___, ___, Key_4, Key_5,      Key_6,              Key_KeypadAdd,      ___,
-    /**/ ___, Key_1, Key_2,      Key_3,              Key_Equals,         ___,
-    ___, ___, Key_0, Key_Period, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
-    ___, ___, ___,   ___,        /**/                /**/                /**/
-    ___  /**/ /**/   /**/        /**/                /**/                /**/
 
   ), [L_FN] = KEYMAP_STACKED (
 
@@ -115,7 +99,7 @@ KEYMAPS(
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
     /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(STOCK_FN),
 
-    ___,                   Key_6,       Key_7,        Key_8,            Key_9,      Key_0,         LockLayer(NUMPAD),
+    ___,                   Key_6,       Key_7,        Key_8,            Key_9,      Key_0,         ___,
     Key_Enter,             Key_Y,       Key_U,        Key_I,            Key_O,      Key_P,         Key_Equals,
     /**/                   Key_H,       Key_J,        Key_K,            Key_L,      Key_Semicolon, Key_Quote,
     Key_RightAlt,          Key_N,       Key_M,        Key_Comma,        Key_Period, Key_Slash,     Key_Minus,
