@@ -245,9 +245,10 @@ class : public kaleidoscope::plugin::LEDMode {
             color_index -= 1;
           }
 
-          uint8_t key_hue = (rainbow_start_hue + (rainbow_end_hue - rainbow_start_hue) / 14 * color_index) % 255;
-
           uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
+          uint8_t rainbow_range = rainbow_end_hue - rainbow_start_hue;
+          uint8_t key_hue = (rainbow_start_hue + rainbow_range * delta / cycle_time + rainbow_range / 14 * color_index) % 255;
+
           byte value;
           if (delta > ramp_time) {
             value = rainbow_value;
@@ -267,13 +268,14 @@ class : public kaleidoscope::plugin::LEDMode {
 
   private:
     uint16_t rainbow_start_hue = 0;  //  stores 0 to 614
-    uint16_t rainbow_end_hue = 230;  //  stores 0 to 614
+    uint16_t rainbow_end_hue = 255;  //  stores 0 to 614
 
     byte rainbow_saturation = 255;
-    byte default_value = 255;
+    byte default_value = 200;
     byte rainbow_value = default_value;
     uint32_t activate_millis = 0;
     uint16_t ramp_time = 1000;
+    uint16_t cycle_time = 10000;
 
 } ledRainbowStaticEffect;
 
