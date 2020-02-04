@@ -126,19 +126,6 @@ KEYMAPS(
 )
 
 
-#define DIGIT(digit, key_state) \
-  if (mapped_key == (Key_ ## digit)) { \
-    if (keyToggledOn(key_state)) { \
-      handleDigit(digit); \
-    } \
-    return EventHandlerResult::EVENT_CONSUMED; \
-  }
-
-#define CASETYPE(ch) \
-  case ' ## ch ## ': \
-    Macros.type(PSTR(" ## ch ## ")); \
-    break;
-
 static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
     case E_A: return PSTR("blobaww");
