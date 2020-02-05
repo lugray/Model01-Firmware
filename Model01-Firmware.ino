@@ -149,33 +149,28 @@ static const char* emojiPstr(int emojiIndex) {
   return PSTR("");
 }
 
-static void slackReactMacro(int emojiIndex, uint8_t keyState) {
-  if (keyToggledOn(keyState)) {
-    Macros.play(MACRO(D(LeftGui), D(LeftShift), T(Backslash), U(LeftShift), U(LeftGui)));
-    Macros.play(MACRO(W(255)));
-    Macros.type(emojiPstr(emojiIndex));
-    Macros.play(MACRO(W(255), T(Enter)));
-  }
+static void slackReactMacro(int emojiIndex) {
+  Macros.play(MACRO(D(LeftGui), D(LeftShift), T(Backslash), U(LeftShift), U(LeftGui)));
+  Macros.play(MACRO(W(255)));
+  Macros.type(emojiPstr(emojiIndex));
+  Macros.play(MACRO(W(255), T(Enter)));
 }
 
-static void typeEmjoiMacro(int emojiIndex, uint8_t keyState) {
-  if (keyToggledOn(keyState)) {
-    Macros.type(PSTR(":"));
-    Macros.type(emojiPstr(emojiIndex));
-    Macros.type(PSTR(":"));
-  }
+static void typeEmojiMacro(int emojiIndex) {
+  Macros.type(PSTR(":"));
+  Macros.type(emojiPstr(emojiIndex));
+  Macros.type(PSTR(":"));
 }
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
-  // 11xxxxxx => Emoji Reaction
-  // 10xxxxxx => Emoji In-line
-  // 0xxxxxxx => Other Macros
-  if ((macroIndex & EMOJI) == EMOJI) {
-    if ((macroIndex & REACT) == REACT) {
-      slackReactMacro(macroIndex & (~REACT), keyState);
-    } else {
-      typeEmjoiMacro(macroIndex & (~EMOJI), keyState);
-    }
+  if (!keyToggledOn(keyState)) {
+    return MACRO_NONE;
+  }
+  if ((macroIndex & REACT) == REACT) {        // 11xxxxxx => Emoji Reaction
+    slackReactMacro(macroIndex & (~REACT));
+  } else if ((macroIndex & EMOJI) == EMOJI) { // 10xxxxxx => Emoji In-line
+    typeEmojiMacro(macroIndex & (~EMOJI));
+  } else {                                    // 0xxxxxxx => Other Macros
   }
   return MACRO_NONE;
 }
