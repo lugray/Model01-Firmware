@@ -16,6 +16,7 @@
 #include "StackArray.h"
 
 enum { E_A, E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
+enum { TOGGLE_LED_MODE }; // Macros
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 #define E(n) Key(n|EMOJI, KEY_FLAGS | SYNTHETIC | IS_MACRO)
@@ -28,7 +29,7 @@ enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       ___,
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       M(TOGGLE_LED_MODE),
     Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
     Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
     Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_LeftAlt,
@@ -125,56 +126,6 @@ KEYMAPS(
   )
 )
 
-
-static const char* emojiPstr(int emojiIndex) {
-  switch(emojiIndex) {
-    case E_A: return PSTR("blobaww");
-    case E_C: return PSTR("claps");
-    case E_E: return PSTR("eyes");
-    case E_F: return PSTR("picard2");
-    case E_G: return PSTR("galaxy");
-    case E_H: return PSTR("purple_heart");
-    case E_I: return PSTR("incredulous_angry_woman");
-    case E_J: return PSTR("joy");
-    case E_L: return PSTR("iamlooking");
-    case E_M: return PSTR("thanks-2");
-    case E_P: return PSTR("point_up");
-    case E_PLUS: return PSTR("wizard-thumb");
-    case E_S: return PSTR("shrug");
-    case E_T: return PSTR("trollface");
-    case E_U: return PSTR("dancing_unicorn");
-    case E_W: return PSTR("blobwave");
-    case E_Y: return PSTR("tada");
-  }
-  return PSTR("");
-}
-
-static void slackReactMacro(int emojiIndex) {
-  Macros.play(MACRO(D(LeftGui), D(LeftShift), T(Backslash), U(LeftShift), U(LeftGui)));
-  Macros.play(MACRO(W(255)));
-  Macros.type(emojiPstr(emojiIndex));
-  Macros.play(MACRO(W(255), T(Enter)));
-}
-
-static void typeEmojiMacro(int emojiIndex) {
-  Macros.type(PSTR(":"));
-  Macros.type(emojiPstr(emojiIndex));
-  Macros.type(PSTR(":"));
-}
-
-const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
-  if (!keyToggledOn(keyState)) {
-    return MACRO_NONE;
-  }
-  if ((macroIndex & REACT) == REACT) {        // 11xxxxxx => Emoji Reaction
-    slackReactMacro(macroIndex & (~REACT));
-  } else if ((macroIndex & EMOJI) == EMOJI) { // 10xxxxxx => Emoji In-line
-    typeEmojiMacro(macroIndex & (~EMOJI));
-  } else {                                    // 0xxxxxxx => Other Macros
-  }
-  return MACRO_NONE;
-}
-
 cRGB overrideColors[LED_COUNT];
 bool overrideColor[LED_COUNT];
 
@@ -223,6 +174,10 @@ class : public kaleidoscope::plugin::LEDMode {
       rainbow_value = default_value;
     }
 
+    void toggle() {
+      cycle = !cycle;
+    }
+
   protected:
     void onActivate(void) {
       activate_millis = Kaleidoscope.millisAtCycleStart();
@@ -242,7 +197,11 @@ class : public kaleidoscope::plugin::LEDMode {
 
           uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
           uint8_t rainbow_range = rainbow_end_hue - rainbow_start_hue;
-          uint8_t key_hue = (rainbow_start_hue + rainbow_range * delta / cycle_time + rainbow_range / 14 * color_index) % 255;
+          uint32_t offset = 0;
+          if (cycle) {
+            offset = rainbow_range * delta / cycle_time;
+          }
+          uint8_t key_hue = (rainbow_start_hue + offset + rainbow_range / 14 * color_index) % 255;
 
           byte value;
           if (delta > ramp_time) {
@@ -270,9 +229,62 @@ class : public kaleidoscope::plugin::LEDMode {
     byte rainbow_value = default_value;
     uint32_t activate_millis = 0;
     uint16_t ramp_time = 1000;
+    bool cycle = true;
     uint16_t cycle_time = 10000;
 
-} ledRainbowStaticEffect;
+} ledRainbowEffect;
+
+static const char* emojiPstr(int emojiIndex) {
+  switch(emojiIndex) {
+    case E_A: return PSTR("blobaww");
+    case E_C: return PSTR("claps");
+    case E_E: return PSTR("eyes");
+    case E_F: return PSTR("picard2");
+    case E_G: return PSTR("galaxy");
+    case E_H: return PSTR("purple_heart");
+    case E_I: return PSTR("incredulous_angry_woman");
+    case E_J: return PSTR("joy");
+    case E_L: return PSTR("iamlooking");
+    case E_M: return PSTR("thanks-2");
+    case E_P: return PSTR("point_up");
+    case E_PLUS: return PSTR("wizard-thumb");
+    case E_S: return PSTR("shrug");
+    case E_T: return PSTR("trollface");
+    case E_U: return PSTR("dancing_unicorn");
+    case E_W: return PSTR("blobwave");
+    case E_Y: return PSTR("tada");
+  }
+  return PSTR("");
+}
+
+static void slackReactMacro(int emojiIndex) {
+  Macros.play(MACRO(D(LeftGui), D(LeftShift), T(Backslash), U(LeftShift), U(LeftGui)));
+  Macros.play(MACRO(W(255)));
+  Macros.type(emojiPstr(emojiIndex));
+  Macros.play(MACRO(W(255), T(Enter)));
+}
+
+static void typeEmojiMacro(int emojiIndex) {
+  Macros.type(PSTR(":"));
+  Macros.type(emojiPstr(emojiIndex));
+  Macros.type(PSTR(":"));
+}
+
+const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
+  if (!keyToggledOn(keyState)) {
+    return MACRO_NONE;
+  }
+  if ((macroIndex & REACT) == REACT) {        // 11xxxxxx => Emoji Reaction
+    slackReactMacro(macroIndex & (~REACT));
+  } else if ((macroIndex & EMOJI) == EMOJI) { // 10xxxxxx => Emoji In-line
+    typeEmojiMacro(macroIndex & (~EMOJI));
+  } else {                                    // 0xxxxxxx => Other Macros
+    switch(macroIndex) {
+      case TOGGLE_LED_MODE: ledRainbowEffect.toggle(); break;
+    }
+  }
+  return MACRO_NONE;
+}
 
 namespace kaleidoscope {
   class FocusLedCommand : public Plugin {
@@ -313,7 +325,7 @@ namespace kaleidoscope {
 
         Focus.read(value);
 
-        ledRainbowStaticEffect.setValue(value);
+        ledRainbowEffect.setValue(value);
 
         ::Focus.send(F("Set base led value to"), value);
         return EventHandlerResult::EVENT_CONSUMED;
@@ -330,7 +342,7 @@ namespace kaleidoscope {
         for (uint8_t i = 0; i < LED_COUNT; i++) {
           overrideColor[i] = false;
         }
-        ledRainbowStaticEffect.resetValue();
+        ledRainbowEffect.resetValue();
 
         ::Focus.send(F("Unset all leds"));
         return EventHandlerResult::EVENT_CONSUMED;
@@ -359,7 +371,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   Focus,
   FocusLedCommand,
   LEDControl,
-  ledRainbowStaticEffect,
+  ledRainbowEffect,
   TopsyTurvy,
   Macros
 );
@@ -367,7 +379,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
 void setup() {
   Kaleidoscope.setup();
   SpaceCadet.map = spaceCadetMap;
-  ledRainbowStaticEffect.activate();
+  ledRainbowEffect.activate();
 }
 
 void loop() {
