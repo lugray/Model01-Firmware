@@ -126,8 +126,8 @@ KEYMAPS(
   )
 )
 
-cRGB overrideColors[LED_COUNT];
-bool overrideColor[LED_COUNT];
+cRGB overrideColors[Kaleidoscope.device().led_count];
+bool overrideColor[Kaleidoscope.device().led_count];
 
 #define TK(rv, cv) (r==rv && c == cv) ||
 
@@ -144,8 +144,8 @@ class : public kaleidoscope::plugin::LEDMode {
       cRGB off = CRGB(0, 0, 0);
       cRGB blue = CRGB(0, 0, 255);
       cRGB red = CRGB(255, 0, 0);
-      for (uint8_t r = 0; r < ROWS; r++) {
-        for (uint8_t c = 0; c < COLS; c++) {
+      for (uint8_t r = 0; r < Kaleidoscope.device().matrix_rows; r++) {
+        for (uint8_t c = 0; c < Kaleidoscope.device().matrix_columns; c++) {
           if (Layer.isActive(STOCK_QW)) {
             if (TK(0, 2) TK(0, 4) TK(0, 11) TK(0, 13) false) {
               LEDControl.setCrgbAt(KeyAddr(r, c), blue);
@@ -184,7 +184,7 @@ class : public kaleidoscope::plugin::LEDMode {
     }
 
     void update(void) {
-      for (uint8_t i = 0; i < LED_COUNT; i++) {
+      for (uint8_t i = 0; i < Kaleidoscope.device().led_count; i++) {
         if (overrideColor[i]) {
           ::LEDControl.setCrgbAt(i, overrideColors[i]);
         } else {
@@ -207,7 +207,7 @@ class : public kaleidoscope::plugin::LEDMode {
           if (delta > ramp_time) {
             value = rainbow_value;
           } else {
-            if (KeyboardHardware.isKeyswitchPressed(R0C6)) { // LED
+            if (Kaleidoscope.device().isKeyswitchPressed(R0C6)) { // LED
               default_value = 80;
               rainbow_value = 80;
             }
@@ -314,7 +314,7 @@ namespace kaleidoscope {
         Focus.read(c);
         Focus.read(color);
 
-        position = KeyboardHardware.getLedIndex(KeyAddr(r, c));
+        position = Kaleidoscope.device().getLedIndex(KeyAddr(r, c));
         overrideColors[position] = color;
         overrideColor[position] = true;
 
@@ -339,7 +339,7 @@ namespace kaleidoscope {
         ::Focus.send(F("Unset led"), position);
         return EventHandlerResult::EVENT_CONSUMED;
       } else if (strcmp_P(command, PSTR("led.unset-all")) == 0) {
-        for (uint8_t i = 0; i < LED_COUNT; i++) {
+        for (uint8_t i = 0; i < Kaleidoscope.device().led_count; i++) {
           overrideColor[i] = false;
         }
         ledRainbowEffect.resetValue();
