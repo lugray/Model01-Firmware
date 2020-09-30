@@ -16,7 +16,8 @@
 #include "StackArray.h"
 
 enum { E_A, E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
-enum { TOGGLE_LED_MODE }; // Macros
+enum { CYCLE_LED_MODE }; // Macros
+enum { CYCLING_RAINBOW, STATIC_RAINBOW, OFF, LED_MODE_COUNT }; // LED Modes
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 #define E(n) Key(n|EMOJI, KEY_FLAGS | SYNTHETIC | IS_MACRO)
@@ -29,7 +30,7 @@ enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       M(TOGGLE_LED_MODE),
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       M(CYCLE_LED_MODE),
     Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
     Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
     Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_LeftAlt,
@@ -174,8 +175,8 @@ class : public kaleidoscope::plugin::LEDMode {
       rainbow_value = default_value;
     }
 
-    void toggle() {
-      cycle = !cycle;
+    void cycle() {
+      led_mode = (led_mode + 1) % LED_MODE_COUNT;
     }
 
   protected:
@@ -198,7 +199,7 @@ class : public kaleidoscope::plugin::LEDMode {
           uint32_t delta = Kaleidoscope.millisAtCycleStart() - activate_millis;
           uint8_t rainbow_range = rainbow_end_hue - rainbow_start_hue;
           uint32_t offset = 0;
-          if (cycle) {
+          if (led_mode == CYCLING_RAINBOW) {
             offset = rainbow_range * delta / cycle_time;
           }
           uint8_t key_hue = (rainbow_start_hue + offset + rainbow_range / 14 * color_index) % 255;
@@ -215,6 +216,9 @@ class : public kaleidoscope::plugin::LEDMode {
           }
 
           cRGB rainbow = hsvToRgb(key_hue, rainbow_saturation, value);
+          if (led_mode == OFF) {
+            rainbow = CRGB(0, 0, 0);
+          }
           ::LEDControl.setCrgbAt(i, rainbow);
         }
       }
@@ -229,8 +233,8 @@ class : public kaleidoscope::plugin::LEDMode {
     byte rainbow_value = default_value;
     uint32_t activate_millis = 0;
     uint16_t ramp_time = 1000;
-    bool cycle = true;
     uint16_t cycle_time = 10000;
+    byte led_mode = CYCLING_RAINBOW;
 
 } ledRainbowEffect;
 
@@ -280,7 +284,7 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     typeEmojiMacro(macroIndex & (~EMOJI));
   } else {                                    // 0xxxxxxx => Other Macros
     switch(macroIndex) {
-      case TOGGLE_LED_MODE: ledRainbowEffect.toggle(); break;
+      case CYCLE_LED_MODE: ledRainbowEffect.cycle(); break;
     }
   }
   return MACRO_NONE;
