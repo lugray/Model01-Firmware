@@ -2,7 +2,7 @@ require 'serialport'
 
 class Focus
   def initialize
-    device = Dir.glob("/dev/cu.usbmodemCkbio*")[0]
+    device = Dir.glob("/dev/cu.usbmodemkbio*")[0]
     raise "Keyboard not connected" unless device
     @serial = SerialPort.new(device, 9600)
   end
