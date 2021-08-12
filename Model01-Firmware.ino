@@ -26,7 +26,7 @@ static const int REACT = EMOJI | 64;
 
 enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN, QUINN }; // layers
 
-#define Key_Sleep LCTRL(LSHIFT(LALT(LGUI(Key_S))))
+#define Key_Sleep LCTRL(LGUI(Key_Q))
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
