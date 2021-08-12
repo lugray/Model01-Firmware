@@ -10,27 +10,28 @@
 #include "Kaleidoscope-FocusSerial.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
+#include "Kaleidoscope-LED-Wavepool.h"
 #include "Kaleidoscope-SpaceCadet.h"
 #include "Kaleidoscope-TopsyTurvy.h"
 #include "Kaleidoscope-Ranges.h"
 #include "StackArray.h"
 
 enum { E_A, E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
-enum { CYCLE_LED_MODE }; // Macros
+enum { CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
 enum { CYCLING_RAINBOW, STATIC_RAINBOW, OFF, LED_MODE_COUNT }; // LED Modes
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 #define E(n) M(n|EMOJI)
 #define R(n) M(n|REACT)
 
-enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
+enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN, QUINN }; // layers
 
 #define Key_Sleep LCTRL(LSHIFT(LALT(LGUI(Key_S))))
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       M(CYCLE_LED_MODE),
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       M(TOGGLE_QUINN),
     Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
     Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
     Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_LeftAlt,
@@ -124,6 +125,22 @@ KEYMAPS(
     ___,                        ___,                    Key_Enter,                ___,                      /**/             /**/              /**/
     ___                         /**/                    /**/                      /**/                      /**/             /**/              /**/
 
+  ), [QUINN] =  KEYMAP_STACKED(
+
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, M(TOGGLE_QUINN),
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, /**/
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+    /**/                       /**/                       /**/                       Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+    /**/                       /**/                       /**/                       /**/                       /**/                       /**/                       Consumer_ChannelIncrement,
+
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+     /**/                      Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
+    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, /**/                       /**/                       /**/
+    Consumer_ChannelIncrement  /**/                       /**/                       /**/                       /**/                       /**/                       /**/
+
   )
 )
 
@@ -208,10 +225,6 @@ class : public kaleidoscope::plugin::LEDMode {
           if (delta > ramp_time) {
             value = rainbow_value;
           } else {
-            if (Kaleidoscope.device().isKeyswitchPressed(R0C6)) { // LED
-              default_value = 80;
-              rainbow_value = 80;
-            }
             value = rainbow_value * delta / ramp_time;
           }
 
@@ -285,6 +298,15 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   } else {                                    // 0xxxxxxx => Other Macros
     switch(macroIndex) {
       case CYCLE_LED_MODE: ledRainbowEffect.cycle(); break;
+      case TOGGLE_QUINN:
+        if (Layer.mostRecent() == PRIMARY) {
+          Layer.move(QUINN);
+          WavepoolEffect.activate();
+        } else {
+          Layer.move(PRIMARY);
+          ledRainbowEffect.activate();
+        }
+        break;
     }
   }
   return MACRO_NONE;
@@ -376,6 +398,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   FocusLedCommand,
   LEDControl,
   ledRainbowEffect,
+  WavepoolEffect,
   TopsyTurvy,
   Macros
 );
@@ -383,6 +406,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
 void setup() {
   Kaleidoscope.setup();
   SpaceCadet.map = spaceCadetMap;
+  WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
 }
 
