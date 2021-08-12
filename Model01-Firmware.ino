@@ -20,8 +20,8 @@ enum { CYCLE_LED_MODE }; // Macros
 enum { CYCLING_RAINBOW, STATIC_RAINBOW, OFF, LED_MODE_COUNT }; // LED Modes
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
-#define E(n) Key(n|EMOJI, KEY_FLAGS | SYNTHETIC | IS_MACRO)
-#define R(n) Key(n|REACT, KEY_FLAGS | SYNTHETIC | IS_MACRO)
+#define E(n) M(n|EMOJI)
+#define R(n) M(n|REACT)
 
 enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN }; // layers
 
@@ -138,7 +138,7 @@ class : public kaleidoscope::plugin::LEDMode {
       // partially-borrowed from
       //  - https://github.com/bjc/Kaleidoscope-LayerHighlighter
       //  - https://github.com/burke/dotfiles/blob/master/Documents/Arduino/Model01-Firmware/firmware.ino
-      uint8_t layer = Layer.top();
+      uint8_t layer = Layer.mostRecent();
       if (layer == PRIMARY) {
         return kaleidoscope::EventHandlerResult::OK;
       }
