@@ -14,7 +14,6 @@
 #include "Kaleidoscope-SpaceCadet.h"
 #include "Kaleidoscope-TopsyTurvy.h"
 #include "Kaleidoscope-Ranges.h"
-#include "StackArray.h"
 
 enum { E_A, E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
 enum { CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
