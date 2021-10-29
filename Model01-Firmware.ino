@@ -14,10 +14,13 @@
 #include "Kaleidoscope-SpaceCadet.h"
 #include "Kaleidoscope-TopsyTurvy.h"
 #include "Kaleidoscope-Ranges.h"
+#include "Kaleidoscope-EEPROM-Settings.h"
+#include "Kaleidoscope-DynamicMacros.h"
 
 enum { E_A, E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
 enum { CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
 enum { CYCLING_RAINBOW, STATIC_RAINBOW, OFF, LED_MODE_COUNT }; // LED Modes
+enum { DM_ANY }; // Dynamic Macros
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 #define E(n) M(n|EMOJI)
@@ -53,7 +56,7 @@ KEYMAPS(
     /**/          /**/                        /**/                        ___,                         Key_Delete, ___,    ___,
     /**/          /**/                        /**/                        /**/                         /**/        /**/    ShiftToLayer(L_EMOJI),
 
-    ___,                    Key_F6,        Key_F7,        Key_F8,                   Key_F9,                   Key_F10,       Key_F11,
+    DM(DM_ANY),             Key_F6,        Key_F7,        Key_F8,                   Key_F9,                   Key_F10,       Key_F11,
     LCTRL(LALT(Key_Enter)), ___,           ___,           ___,                      ___,                      ___,           Key_F12,
     /**/                    Key_LeftArrow, Key_DownArrow, Key_UpArrow,              Key_RightArrow,           ___,           ___,
     ShiftToLayer(L_REACT),  ___,           Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash, Key_Pipe,
@@ -399,7 +402,9 @@ KALEIDOSCOPE_INIT_PLUGINS(
   ledRainbowEffect,
   WavepoolEffect,
   TopsyTurvy,
-  Macros
+  Macros,
+  EEPROMSettings,
+  DynamicMacros
 );
 
 void setup() {
@@ -407,6 +412,7 @@ void setup() {
   SpaceCadet.map = spaceCadetMap;
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
+  DynamicMacros.reserve_storage(128);
 }
 
 void loop() {
