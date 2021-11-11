@@ -52,25 +52,25 @@ KEYMAPS(
     Sleep,          Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            ___,
     Key_Enter,      Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
     /**/            Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
-    TOPSY(Minus),   Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
+    TOPSY(Minus),   Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Backslash,
     Key_RightShift, Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
     STL(L_FN)       /**/          /**/          /**/              /**/        /**/              /**/
 
   ), [L_FN] = KEYMAP_STACKED (
 
-    ___,          Key_F1,  Key_F2,     Key_F3,   Key_F4,     Key_F5, M(TOGGLE_QUINN),
-    Key_Tab,      ___,     WinUp,      ___,      ___,        ___,    ___,
-    Key_PageUp,   WinLeft, WinDown,    WinRight, ___,        ___,    /**/
-    Key_PageDown, ___,     Key_Insert, ___,      ___,        ___,    ___,
-    /**/          /**/     /**/        ___,      Key_Delete, ___,    ___,
-    /**/          /**/     /**/        /**/      /**/        /**/    STL(L_EMOJI),
+    ___,          Key_F1,  Key_F2,  Key_F3,   Key_F4,     Key_F5, M(TOGGLE_QUINN),
+    ___,          ___,     WinUp,   ___,      ___,        ___,    ___,
+    Key_PageUp,   WinLeft, WinDown, WinRight, ___,        ___,    /**/
+    Key_PageDown, ___,     ___,     ___,      ___,        ___,    ___,
+    /**/          /**/     /**/     ___,      Key_Delete, ___,    ___,
+    /**/          /**/     /**/     /**/      /**/        /**/    STL(L_EMOJI),
 
-    DM(DM_ANY),   Key_F6,        Key_F7,        Key_F8,      Key_F9,         Key_F10,       Key_F11,
-    WinMax,       ___,           ___,           ___,         ___,            ___,           Key_F12,
-    /**/          Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___,           ___,
-    ___,          ___,           Mute,          VolDown,     VolUp,          Key_Backslash, Key_Pipe,
-    ___,          ___,           Key_Enter,     ___,         /**/            /**/           /**/
-    STL(L_EMOJI), /**/           /**/           /**/         /**/            /**/           /**/
+    DM(DM_ANY),   Key_F6,        Key_F7,        Key_F8,      Key_F9,         Key_F10, Key_F11,
+    WinMax,       ___,           ___,           ___,         ___,            ___,     Key_F12,
+    /**/          Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___,     ___,
+    ___,          ___,           Mute,          VolDown,     VolUp,          ___,     ___,
+    ___,          ___,           Key_Enter,     ___,         /**/            /**/     /**/
+    STL(L_EMOJI), /**/           /**/           /**/         /**/            /**/     /**/
 
   ), [L_EMOJI] = KEYMAP(
 
