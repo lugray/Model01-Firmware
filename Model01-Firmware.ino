@@ -17,7 +17,7 @@
 #include "Kaleidoscope-EEPROM-Settings.h"
 #include "Kaleidoscope-DynamicMacros.h"
 
-enum { E_A, E_C, E_E, E_F, E_G, E_H, E_I, E_J, E_L, E_M, E_P, E_PLUS, E_S, E_T, E_U, E_W, E_Y }; // Emoji Keys
+enum { E_A, E_B, E_C, E_D, E_E, E_F, E_G, E_H, E_I, E_J, E_K, E_L, E_M, E_N, E_O, E_P, E_Q, E_R, E_S, E_T, E_U, E_V, E_W, E_X, E_Y, E_Z, E_PLUS }; // Emoji Keys
 enum { CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
 enum { CYCLING_RAINBOW, STATIC_RAINBOW, OFF, LED_MODE_COUNT }; // LED Modes
 enum { DM_ANY }; // Dynamic Macros
@@ -65,33 +65,33 @@ KEYMAPS(
 
   ), [L_EMOJI] = KEYMAP_STACKED(
 
-    ___, ___, ___,    ___,    ___,    ___,    ___,
-    ___, ___, E(E_W), E(E_E), ___,    E(E_T), ___,
-    ___, E(E_A), E(E_S), ___,    E(E_F), E(E_G), /**/
-    ___, ___, ___,    E(E_C), ___,    ___,    ___,
-    /**/ /**/ /**/    ___,    ___,    ___,    ___,
-    /**/ /**/ /**/    /**/    /**/    /**/    ShiftToLayer(L_REACT),
+    ___, ___,    ___,    ___,    ___,    ___,    ___,
+    ___, E(E_Q), E(E_W), E(E_E), E(E_R), E(E_T), ___,
+    ___, E(E_A), E(E_S), E(E_D), E(E_F), E(E_G), /**/
+    ___, E(E_Z), E(E_X), E(E_C), E(E_V), E(E_B), ___,
+    /**/ /**/    /**/    ___,    ___,    ___,    ___,
+    /**/ /**/    /**/    /**/    /**/    /**/    ShiftToLayer(L_REACT),
 
     ___,                  ___,    ___,    ___,    ___,    ___,    ___,
-    ___,                  E(E_Y), E(E_U), E(E_I), ___,    E(E_P), E(E_PLUS),
-    /**/                  E(E_H), E(E_J), ___,    E(E_L), ___,    ___,
-    ___,                  ___,    E(E_M), ___,    ___,    ___,    ___,
+    ___,                  E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
+    /**/                  E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
+    ___,                  E(E_N), E(E_M), ___,    ___,    ___,    ___,
     ___,                  ___,    ___,    ___,    /**/    /**/    /**/
     ShiftToLayer(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
 
   ), [L_REACT] = KEYMAP_STACKED(
 
-    ___, ___, ___,    ___,    ___,    ___,    ___,
-    ___, ___, R(E_W), R(E_E), ___,    R(E_T), ___,
-    ___, R(E_A), R(E_S), ___,    R(E_F), R(E_G), /**/
-    ___, ___, ___,    R(E_C), ___,    ___,    ___,
-    /**/ /**/ /**/    ___,    ___,    ___,    ___,
-    /**/ /**/ /**/    /**/    /**/    /**/    ___,
+    ___, ___,    ___,    ___,    ___,    ___,    ___,
+    ___, R(E_Q), R(E_W), R(E_E), R(E_R), R(E_T), ___,
+    ___, R(E_A), R(E_S), R(E_D), R(E_F), R(E_G), /**/
+    ___, R(E_Z), R(E_X), R(E_C), R(E_V), R(E_B), ___,
+    /**/ /**/    /**/    ___,    ___,    ___,    ___,
+    /**/ /**/    /**/    /**/    /**/    /**/    ___,
 
     ___, ___,    ___,    ___,    ___,    ___,    ___,
-    ___, R(E_Y), R(E_U), R(E_I), ___,    R(E_P), R(E_PLUS),
-    /**/ R(E_H), R(E_J), ___,    R(E_L), ___,    ___,
-    ___, ___,    R(E_M), ___,    ___,    ___,    ___,
+    ___, R(E_Y), R(E_U), R(E_I), R(E_O), R(E_P), R(E_PLUS),
+    /**/ R(E_H), R(E_J), R(E_K), R(E_L), ___,    ___,
+    ___, R(E_N), R(E_M), ___,    ___,    ___,    ___,
     ___, ___,    ___,    ___,    /**/    /**/    /**/
     ___  /**/    /**/    /**/    /**/    /**/    /**/
 
@@ -255,38 +255,31 @@ class : public kaleidoscope::plugin::LEDMode {
 
 static const char* emojiPstr(int emojiIndex) {
   switch(emojiIndex) {
-    case E_A: return PSTR("blobaww");
-    case E_C: return PSTR("claps");
-    case E_E: return PSTR("eyes");
-    case E_F: return PSTR("picard2");
-    case E_G: return PSTR("galaxy");
-    case E_H: return PSTR("purple_heart");
-    case E_I: return PSTR("incredulous_angry_woman");
-    case E_J: return PSTR("joy");
-    case E_L: return PSTR("iamlooking");
-    case E_M: return PSTR("thanks-2");
-    case E_P: return PSTR("point_up");
-    case E_PLUS: return PSTR("wizard-thumb");
-    case E_S: return PSTR("shrug");
-    case E_T: return PSTR("trollface");
-    case E_U: return PSTR("dancing_unicorn");
-    case E_W: return PSTR("blobwave");
-    case E_Y: return PSTR("tada");
+    case E_A: return PSTR(":blobaww:");
+    case E_E: return PSTR(":eyes:");
+    case E_F: return PSTR(":facepalm:");
+    case E_H: return PSTR(":purple_heart:");
+    case E_J: return PSTR(":joy:");
+    case E_L: return PSTR(":lololol:");
+    case E_N: return PSTR(":noprobllama:");
+    case E_PLUS: return PSTR(":wizard-thumb:");
+    case E_S: return PSTR(":woman-shrugging:");
+    case E_T: return PSTR(":thanks-2:");
+    case E_U: return PSTR(":dancing_unicorn:");
+    case E_W: return PSTR(":thunkface:");
+    case E_Y: return PSTR(":this:");
   }
   return PSTR("");
 }
 
 static void slackReactMacro(int emojiIndex) {
-  Macros.play(MACRO(D(LeftGui), D(LeftShift), T(Backslash), U(LeftShift), U(LeftGui)));
-  Macros.play(MACRO(W(255)));
+  Macros.type(PSTR("+"));
   Macros.type(emojiPstr(emojiIndex));
-  Macros.play(MACRO(W(255), T(Enter)));
+  Macros.play(MACRO(T(Enter)));
 }
 
 static void typeEmojiMacro(int emojiIndex) {
-  Macros.type(PSTR(":"));
   Macros.type(emojiPstr(emojiIndex));
-  Macros.type(PSTR(":"));
 }
 
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
