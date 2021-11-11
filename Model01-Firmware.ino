@@ -18,7 +18,7 @@
 #include "Kaleidoscope-DynamicMacros.h"
 
 enum { E_A, E_B, E_C, E_D, E_E, E_F, E_G, E_H, E_I, E_J, E_K, E_L, E_M, E_N, E_O, E_P, E_Q, E_R, E_S, E_T, E_U, E_V, E_W, E_X, E_Y, E_Z, E_PLUS }; // Emoji Keys
-enum { MACRO_NOP, CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
+enum { MACRO_NOP, TOGGLE_QUINN }; // Macros
 enum { DM_ANY }; // Dynamic Macros
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
