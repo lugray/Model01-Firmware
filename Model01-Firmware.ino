@@ -49,7 +49,7 @@ KEYMAPS(
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
     /**/          /**/   /**/   /**/             /**/           /**/         STL(FN),
 
-    Key_Minus,      Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            Sleep,
+    Sleep,          Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            STL(REACT),
     Key_Enter,      Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
     /**/            Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
     TOPSY(Minus),   Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Backslash,
@@ -65,12 +65,12 @@ KEYMAPS(
     /**/          /**/     /**/     ___,      Key_Delete, ___,    ___,
     /**/          /**/     /**/     /**/      /**/        /**/    STL(EMOJI),
 
-    DM(DM_ANY), Key_F6,        Key_F7,        Key_F8,      Key_F9,         Key_F10, Key_F11,
-    WinMax,     ___,           ___,           ___,         ___,            ___,     Key_F12,
-    /**/        Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___,     ___,
-    ___,        ___,           Mute,          VolDown,     VolUp,          ___,     ___,
-    ___,        ___,           Key_Enter,     ___,         /**/            /**/     /**/
-    STL(EMOJI), /**/           /**/           /**/         /**/            /**/     /**/
+    DM(DM_ANY), Key_F6,        Key_F7,        Key_F8,      Key_F9,         Key_F10,       Key_F11,
+    WinMax,     ___,           ___,           ___,         ___,            ___,           Key_F12,
+    /**/        Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, Key_Semicolon, TOPSY(Quote),
+    Key_Minus,  ___,           Mute,          VolDown,     VolUp,          TOPSY(Slash),  TOPSY(Backslash),
+    ___,        ___,           Key_Enter,     ___,         /**/            /**/           /**/
+    STL(EMOJI), /**/           /**/           /**/         /**/            /**/           /**/
 
   ), [L_EMOJI] = KEYMAP(
 
