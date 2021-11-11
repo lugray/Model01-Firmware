@@ -192,15 +192,14 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
-static const int spaceCadetTimeout = 250;
 static kaleidoscope::plugin::SpaceCadet::KeyBinding spaceCadetMap[] = {
-  {Key_LeftShift,    Key_LeftParen,         spaceCadetTimeout},
-  {Key_RightShift,   Key_RightParen,        spaceCadetTimeout},
-  {Key_LeftGui,      Key_LeftCurlyBracket,  spaceCadetTimeout},
-  {Key_RightGui,     Key_RightCurlyBracket, spaceCadetTimeout},
-  {Key_LeftControl,  Key_LeftBracket,       spaceCadetTimeout},
-  {Key_RightControl, Key_RightBracket,      spaceCadetTimeout},
-  {Key_LeftAlt,      Key_Escape,            spaceCadetTimeout},
+  {Key_LeftShift,    Key_LeftParen},
+  {Key_RightShift,   Key_RightParen},
+  {Key_LeftGui,      Key_LeftCurlyBracket},
+  {Key_RightGui,     Key_RightCurlyBracket},
+  {Key_LeftControl,  Key_LeftBracket},
+  {Key_RightControl, Key_RightBracket},
+  {Key_LeftAlt,      Key_Escape},
   SPACECADET_MAP_END
 };
 
@@ -219,6 +218,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
 void setup() {
   Kaleidoscope.setup();
+  SpaceCadet.time_out = 250;
   SpaceCadet.map = spaceCadetMap;
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
