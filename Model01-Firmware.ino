@@ -18,13 +18,14 @@
 #include "Kaleidoscope-DynamicMacros.h"
 
 enum { E_A, E_B, E_C, E_D, E_E, E_F, E_G, E_H, E_I, E_J, E_K, E_L, E_M, E_N, E_O, E_P, E_Q, E_R, E_S, E_T, E_U, E_V, E_W, E_X, E_Y, E_Z, E_PLUS }; // Emoji Keys
-enum { CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
+enum { MACRO_NOP, CYCLE_LED_MODE, TOGGLE_QUINN }; // Macros
 enum { CYCLING_RAINBOW, STATIC_RAINBOW, OFF, LED_MODE_COUNT }; // LED Modes
 enum { DM_ANY }; // Dynamic Macros
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 #define E(n) M(n|EMOJI)
 #define R(n) M(n|REACT)
+#define Key_NOP M(MACRO_NOP)
 
 enum { PRIMARY, L_FN, L_EMOJI, L_REACT, QUINN }; // layers
 
@@ -97,19 +98,19 @@ KEYMAPS(
 
   ), [QUINN] =  KEYMAP_STACKED(
 
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, M(TOGGLE_QUINN),
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, /**/
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-    /**/                       /**/                       /**/                       Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-    /**/                       /**/                       /**/                       /**/                       /**/                       /**/                       Consumer_ChannelIncrement,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, M(TOGGLE_QUINN),
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, /**/
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    /**/     /**/     /**/     Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    /**/     /**/     /**/     /**/     /**/     /**/     Key_NOP,
 
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-     /**/                      Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement,
-    Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, /**/                       /**/                       /**/
-    Consumer_ChannelIncrement  /**/                       /**/                       /**/                       /**/                       /**/                       /**/
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+     /**/    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, /**/     /**/     /**/
+    Key_NOP  /**/     /**/     /**/     /**/     /**/     /**/
 
   )
 )
