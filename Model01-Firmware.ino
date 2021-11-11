@@ -26,43 +26,44 @@ static const int REACT = EMOJI | 64;
 #define E(n) M(n|EMOJI)
 #define R(n) M(n|REACT)
 #define Key_NOP M(MACRO_NOP)
+#define STL(n) ShiftToLayer(n)
 
-enum { PRIMARY, L_FN, L_EMOJI, L_REACT, QUINN }; // layers
+enum { PRIMARY, L_FN, L_EMOJI, L_REACT, QUINN, Q_FN }; // layers
 
 #define Key_Sleep LCTRL(LGUI(Key_Q))
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       M(TOGGLE_QUINN),
+    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       ___,
     Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
     Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
     Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_LeftAlt,
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
-    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(L_FN),
+    /**/          /**/   /**/   /**/             /**/           /**/         STL(L_FN),
 
-    Key_Sleep,         Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            ___,
-    Key_Enter,         Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
-    /**/               Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
-    TOPSY(Minus),      Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
-    Key_RightShift,    Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
-    ShiftToLayer(L_FN) /**/          /**/          /**/              /**/        /**/              /**/
+    Key_Sleep,      Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            ___,
+    Key_Enter,      Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
+    /**/            Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
+    TOPSY(Minus),   Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
+    Key_RightShift, Key_RightGui, Key_Spacebar, Key_RightControl, /**/        /**/              /**/
+    STL(L_FN)       /**/          /**/          /**/              /**/        /**/              /**/
 
   ), [L_FN] = KEYMAP_STACKED (
 
-    ___,          Key_F1,                     Key_F2,                     Key_F3,                      Key_F4,     Key_F5, Key_CapsLock,
+    ___,          Key_F1,                     Key_F2,                     Key_F3,                      Key_F4,     Key_F5, M(TOGGLE_QUINN),
     Key_Tab,      ___,                        LCTRL(LALT(Key_UpArrow)),   ___,                         ___,        ___,    ___,
     Key_PageUp,   LCTRL(LALT(Key_LeftArrow)), LCTRL(LALT(Key_DownArrow)), LCTRL(LALT(Key_RightArrow)), ___,        ___,    /**/
     Key_PageDown, Key_PrintScreen,            Key_Insert,                 ___,                         ___,        ___,    ___,
     /**/          /**/                        /**/                        ___,                         Key_Delete, ___,    ___,
-    /**/          /**/                        /**/                        /**/                         /**/        /**/    ShiftToLayer(L_EMOJI),
+    /**/          /**/                        /**/                        /**/                         /**/        /**/    STL(L_EMOJI),
 
     DM(DM_ANY),             Key_F6,        Key_F7,        Key_F8,                   Key_F9,                   Key_F10,       Key_F11,
     LCTRL(LALT(Key_Enter)), ___,           ___,           ___,                      ___,                      ___,           Key_F12,
     /**/                    Key_LeftArrow, Key_DownArrow, Key_UpArrow,              Key_RightArrow,           ___,           ___,
-    ShiftToLayer(L_REACT),  ___,           Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash, Key_Pipe,
+    STL(L_REACT),           ___,           Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash, Key_Pipe,
     ___,                    ___,           Key_Enter,     ___,                      /**/                      /**/           /**/
-    ShiftToLayer(L_EMOJI),  /**/           /**/           /**/                      /**/                      /**/           /**/
+    STL(L_EMOJI),           /**/           /**/           /**/                      /**/                      /**/           /**/
 
   ), [L_EMOJI] = KEYMAP_STACKED(
 
@@ -71,14 +72,14 @@ KEYMAPS(
     ___, E(E_A), E(E_S), E(E_D), E(E_F), E(E_G), /**/
     ___, E(E_Z), E(E_X), E(E_C), E(E_V), E(E_B), ___,
     /**/ /**/    /**/    ___,    ___,    ___,    ___,
-    /**/ /**/    /**/    /**/    /**/    /**/    ShiftToLayer(L_REACT),
+    /**/ /**/    /**/    /**/    /**/    /**/    STL(L_REACT),
 
-    ___,                  ___,    ___,    ___,    ___,    ___,    ___,
-    ___,                  E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
-    /**/                  E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
-    ___,                  E(E_N), E(E_M), ___,    ___,    ___,    ___,
-    ___,                  ___,    ___,    ___,    /**/    /**/    /**/
-    ShiftToLayer(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
+    ___,         ___,    ___,    ___,    ___,    ___,    ___,
+    ___,         E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
+    /**/         E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
+    ___,         E(E_N), E(E_M), ___,    ___,    ___,    ___,
+    ___,         ___,    ___,    ___,    /**/    /**/    /**/
+    STL(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
 
   ), [L_REACT] = KEYMAP_STACKED(
 
@@ -98,19 +99,35 @@ KEYMAPS(
 
   ), [QUINN] =  KEYMAP_STACKED(
 
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, M(TOGGLE_QUINN),
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
     Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
     Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, /**/
     Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
     /**/     /**/     /**/     Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    /**/     /**/     /**/     /**/     /**/     /**/     Key_NOP,
+    /**/     /**/     /**/     /**/     /**/     /**/     STL(Q_FN),
 
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-     /**/    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, /**/     /**/     /**/
-    Key_NOP  /**/     /**/     /**/     /**/     /**/     /**/
+    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    /**/      Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, /**/     /**/     /**/
+    STL(Q_FN) /**/     /**/     /**/     /**/     /**/     /**/
+
+  ), [Q_FN] =  KEYMAP_STACKED(
+
+    ___, ___, ___, ___, ___, ___, M(TOGGLE_QUINN),
+    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, /**/
+    ___, ___, ___, ___, ___, ___, ___,
+    /**/ /**/ /**/ ___, ___, ___, ___,
+    /**/ /**/ /**/ /**/ /**/ /**/ ___,
+
+    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,
+    /**/ ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, /**/ /**/ /**/
+    ___  /**/ /**/ /**/ /**/ /**/ /**/
 
   )
 )
@@ -223,7 +240,7 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     switch(macroIndex) {
       case CYCLE_LED_MODE: ledRainbowEffect.cycle(); break;
       case TOGGLE_QUINN:
-        if (Layer.mostRecent() == PRIMARY) {
+        if (Layer.mostRecent() == L_FN) {
           Layer.move(QUINN);
           WavepoolEffect.activate();
         } else {
