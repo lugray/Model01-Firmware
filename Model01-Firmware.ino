@@ -30,7 +30,15 @@ static const int REACT = EMOJI | 64;
 
 enum { PRIMARY, L_FN, L_EMOJI, L_REACT, QUINN, Q_FN }; // layers
 
-#define Key_Sleep LCTRL(LGUI(Key_Q))
+#define Sleep LCTRL(LGUI(Key_Q))
+#define WinUp LCTRL(LALT(Key_UpArrow))
+#define WinDown LCTRL(LALT(Key_DownArrow))
+#define WinLeft LCTRL(LALT(Key_LeftArrow))
+#define WinRight LCTRL(LALT(Key_RightArrow))
+#define WinMax LCTRL(LALT(Key_Enter))
+#define Mute Consumer_Mute
+#define VolDown Consumer_VolumeDecrement
+#define VolUp Consumer_VolumeIncrement
 
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
@@ -42,7 +50,7 @@ KEYMAPS(
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
     /**/          /**/   /**/   /**/             /**/           /**/         STL(L_FN),
 
-    Key_Sleep,      Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            ___,
+    Sleep,          Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            ___,
     Key_Enter,      Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
     /**/            Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
     TOPSY(Minus),   Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
@@ -51,19 +59,19 @@ KEYMAPS(
 
   ), [L_FN] = KEYMAP_STACKED (
 
-    ___,          Key_F1,                     Key_F2,                     Key_F3,                      Key_F4,     Key_F5, M(TOGGLE_QUINN),
-    Key_Tab,      ___,                        LCTRL(LALT(Key_UpArrow)),   ___,                         ___,        ___,    ___,
-    Key_PageUp,   LCTRL(LALT(Key_LeftArrow)), LCTRL(LALT(Key_DownArrow)), LCTRL(LALT(Key_RightArrow)), ___,        ___,    /**/
-    Key_PageDown, Key_PrintScreen,            Key_Insert,                 ___,                         ___,        ___,    ___,
-    /**/          /**/                        /**/                        ___,                         Key_Delete, ___,    ___,
-    /**/          /**/                        /**/                        /**/                         /**/        /**/    STL(L_EMOJI),
+    ___,          Key_F1,  Key_F2,     Key_F3,   Key_F4,     Key_F5, M(TOGGLE_QUINN),
+    Key_Tab,      ___,     WinUp,      ___,      ___,        ___,    ___,
+    Key_PageUp,   WinLeft, WinDown,    WinRight, ___,        ___,    /**/
+    Key_PageDown, ___,     Key_Insert, ___,      ___,        ___,    ___,
+    /**/          /**/     /**/        ___,      Key_Delete, ___,    ___,
+    /**/          /**/     /**/        /**/      /**/        /**/    STL(L_EMOJI),
 
-    DM(DM_ANY),             Key_F6,        Key_F7,        Key_F8,                   Key_F9,                   Key_F10,       Key_F11,
-    LCTRL(LALT(Key_Enter)), ___,           ___,           ___,                      ___,                      ___,           Key_F12,
-    /**/                    Key_LeftArrow, Key_DownArrow, Key_UpArrow,              Key_RightArrow,           ___,           ___,
-    STL(L_REACT),           ___,           Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_Backslash, Key_Pipe,
-    ___,                    ___,           Key_Enter,     ___,                      /**/                      /**/           /**/
-    STL(L_EMOJI),           /**/           /**/           /**/                      /**/                      /**/           /**/
+    DM(DM_ANY),   Key_F6,        Key_F7,        Key_F8,      Key_F9,         Key_F10,       Key_F11,
+    WinMax,       ___,           ___,           ___,         ___,            ___,           Key_F12,
+    /**/          Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___,           ___,
+    STL(L_REACT), ___,           Mute,          VolDown,     VolUp,          Key_Backslash, Key_Pipe,
+    ___,          ___,           Key_Enter,     ___,         /**/            /**/           /**/
+    STL(L_EMOJI), /**/           /**/           /**/         /**/            /**/           /**/
 
   ), [L_EMOJI] = KEYMAP_STACKED(
 
