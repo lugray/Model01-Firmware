@@ -42,7 +42,7 @@ enum { PRIMARY, L_FN, L_EMOJI, L_REACT, QUINN, Q_FN }; // layers
 KEYMAPS(
   [PRIMARY] = KEYMAP_STACKED(
 
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       Key_LEDEffectNext,
+    STL(L_REACT), Key_1, Key_2, Key_3,           Key_4,         Key_5,       Key_LEDEffectNext,
     Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
     Key_Home,     Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
     Key_End,      Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_LeftAlt,
@@ -68,18 +68,18 @@ KEYMAPS(
     DM(DM_ANY),   Key_F6,        Key_F7,        Key_F8,      Key_F9,         Key_F10,       Key_F11,
     WinMax,       ___,           ___,           ___,         ___,            ___,           Key_F12,
     /**/          Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___,           ___,
-    STL(L_REACT), ___,           Mute,          VolDown,     VolUp,          Key_Backslash, Key_Pipe,
+    ___,          ___,           Mute,          VolDown,     VolUp,          Key_Backslash, Key_Pipe,
     ___,          ___,           Key_Enter,     ___,         /**/            /**/           /**/
     STL(L_EMOJI), /**/           /**/           /**/         /**/            /**/           /**/
 
   ), [L_EMOJI] = KEYMAP(
 
-    ___, ___,    ___,    ___,    ___,    ___,    ___,          ___,         ___,    ___,    ___,    ___,    ___,    ___,
-    ___, E(E_Q), E(E_W), E(E_E), E(E_R), E(E_T), ___,          ___,         E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
-    ___, E(E_A), E(E_S), E(E_D), E(E_F), E(E_G), /**/          /**/         E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
-    ___, E(E_Z), E(E_X), E(E_C), E(E_V), E(E_B), ___,          ___,         E(E_N), E(E_M), ___,    ___,    ___,    ___,
-    /**/ /**/    /**/    ___,    ___,    ___,    ___,          ___,         ___,    ___,    ___,    /**/    /**/    /**/
-    /**/ /**/    /**/    /**/    /**/    /**/    STL(L_REACT), STL(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
+    ___, ___,    ___,    ___,    ___,    ___,    ___, ___, ___,    ___,    ___,    ___,    ___,    ___,
+    ___, E(E_Q), E(E_W), E(E_E), E(E_R), E(E_T), ___, ___, E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
+    ___, E(E_A), E(E_S), E(E_D), E(E_F), E(E_G), /**/ /**/ E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
+    ___, E(E_Z), E(E_X), E(E_C), E(E_V), E(E_B), ___, ___, E(E_N), E(E_M), ___,    ___,    ___,    ___,
+    /**/ /**/    /**/    ___,    ___,    ___,    ___, ___, ___,    ___,    ___,    /**/    /**/    /**/
+    /**/ /**/    /**/    /**/    /**/    /**/    ___, ___  /**/    /**/    /**/    /**/    /**/    /**/
 
   ), [L_REACT] = KEYMAP(
 
