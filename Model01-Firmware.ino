@@ -72,69 +72,41 @@ KEYMAPS(
     ___,          ___,           Key_Enter,     ___,         /**/            /**/           /**/
     STL(L_EMOJI), /**/           /**/           /**/         /**/            /**/           /**/
 
-  ), [L_EMOJI] = KEYMAP_STACKED(
+  ), [L_EMOJI] = KEYMAP(
 
-    ___, ___,    ___,    ___,    ___,    ___,    ___,
-    ___, E(E_Q), E(E_W), E(E_E), E(E_R), E(E_T), ___,
-    ___, E(E_A), E(E_S), E(E_D), E(E_F), E(E_G), /**/
-    ___, E(E_Z), E(E_X), E(E_C), E(E_V), E(E_B), ___,
-    /**/ /**/    /**/    ___,    ___,    ___,    ___,
-    /**/ /**/    /**/    /**/    /**/    /**/    STL(L_REACT),
+    ___, ___,    ___,    ___,    ___,    ___,    ___,          ___,         ___,    ___,    ___,    ___,    ___,    ___,
+    ___, E(E_Q), E(E_W), E(E_E), E(E_R), E(E_T), ___,          ___,         E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
+    ___, E(E_A), E(E_S), E(E_D), E(E_F), E(E_G), /**/          /**/         E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
+    ___, E(E_Z), E(E_X), E(E_C), E(E_V), E(E_B), ___,          ___,         E(E_N), E(E_M), ___,    ___,    ___,    ___,
+    /**/ /**/    /**/    ___,    ___,    ___,    ___,          ___,         ___,    ___,    ___,    /**/    /**/    /**/
+    /**/ /**/    /**/    /**/    /**/    /**/    STL(L_REACT), STL(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
 
-    ___,         ___,    ___,    ___,    ___,    ___,    ___,
-    ___,         E(E_Y), E(E_U), E(E_I), E(E_O), E(E_P), E(E_PLUS),
-    /**/         E(E_H), E(E_J), E(E_K), E(E_L), ___,    ___,
-    ___,         E(E_N), E(E_M), ___,    ___,    ___,    ___,
-    ___,         ___,    ___,    ___,    /**/    /**/    /**/
-    STL(L_REACT) /**/    /**/    /**/    /**/    /**/    /**/
+  ), [L_REACT] = KEYMAP(
 
-  ), [L_REACT] = KEYMAP_STACKED(
+    ___, ___,    ___,    ___,    ___,    ___,    ___, ___, ___,    ___,    ___,    ___,    ___,    ___,
+    ___, R(E_Q), R(E_W), R(E_E), R(E_R), R(E_T), ___, ___, R(E_Y), R(E_U), R(E_I), R(E_O), R(E_P), R(E_PLUS),
+    ___, R(E_A), R(E_S), R(E_D), R(E_F), R(E_G), /**/ /**/ R(E_H), R(E_J), R(E_K), R(E_L), ___,    ___,
+    ___, R(E_Z), R(E_X), R(E_C), R(E_V), R(E_B), ___, ___, R(E_N), R(E_M), ___,    ___,    ___,    ___,
+    /**/ /**/    /**/    ___,    ___,    ___,    ___, ___, ___,    ___,    ___,    /**/    /**/    /**/
+    /**/ /**/    /**/    /**/    /**/    /**/    ___, ___  /**/    /**/    /**/    /**/    /**/    /**/
 
-    ___, ___,    ___,    ___,    ___,    ___,    ___,
-    ___, R(E_Q), R(E_W), R(E_E), R(E_R), R(E_T), ___,
-    ___, R(E_A), R(E_S), R(E_D), R(E_F), R(E_G), /**/
-    ___, R(E_Z), R(E_X), R(E_C), R(E_V), R(E_B), ___,
-    /**/ /**/    /**/    ___,    ___,    ___,    ___,
-    /**/ /**/    /**/    /**/    /**/    /**/    ___,
+  ), [QUINN] =  KEYMAP(
 
-    ___, ___,    ___,    ___,    ___,    ___,    ___,
-    ___, R(E_Y), R(E_U), R(E_I), R(E_O), R(E_P), R(E_PLUS),
-    /**/ R(E_H), R(E_J), R(E_K), R(E_L), ___,    ___,
-    ___, R(E_N), R(E_M), ___,    ___,    ___,    ___,
-    ___, ___,    ___,    ___,    /**/    /**/    /**/
-    ___  /**/    /**/    /**/    /**/    /**/    /**/
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,   Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,   Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, /**/       /**/      Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,   Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
+    /**/     /**/     /**/     Key_NOP, Key_NOP, Key_NOP, Key_NOP,   Key_NOP,  Key_NOP, Key_NOP, Key_NOP, /**/     /**/     /**/
+    /**/     /**/     /**/     /**/     /**/     /**/     STL(Q_FN), STL(Q_FN) /**/     /**/     /**/     /**/     /**/     /**/
 
-  ), [QUINN] =  KEYMAP_STACKED(
+  ), [Q_FN] =  KEYMAP(
 
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, /**/
-    Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    /**/     /**/     /**/     Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    /**/     /**/     /**/     /**/     /**/     /**/     STL(Q_FN),
-
-    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    /**/      Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP, Key_NOP,
-    Key_NOP,  Key_NOP, Key_NOP, Key_NOP, /**/     /**/     /**/
-    STL(Q_FN) /**/     /**/     /**/     /**/     /**/     /**/
-
-  ), [Q_FN] =  KEYMAP_STACKED(
-
-    ___, ___, ___, ___, ___, ___, M(TOGGLE_QUINN),
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, /**/
-    ___, ___, ___, ___, ___, ___, ___,
-    /**/ /**/ /**/ ___, ___, ___, ___,
-    /**/ /**/ /**/ /**/ /**/ /**/ ___,
-
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    /**/ ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, /**/ /**/ /**/
-    ___  /**/ /**/ /**/ /**/ /**/ /**/
+    ___, ___, ___, ___, ___, ___, M(TOGGLE_QUINN), ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,             ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, /**/             /**/ ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,             ___, ___, ___, ___, ___, ___, ___,
+    /**/ /**/ /**/ ___, ___, ___, ___,             ___, ___, ___, ___, /**/ /**/ /**/
+    /**/ /**/ /**/ /**/ /**/ /**/ ___,             ___  /**/ /**/ /**/ /**/ /**/ /**/
 
   )
 )
