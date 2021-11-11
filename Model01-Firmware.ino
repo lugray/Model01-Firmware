@@ -26,7 +26,7 @@ static const int REACT = EMOJI | 64;
 #define E(n) M(n|EMOJI)
 #define R(n) M(n|REACT)
 
-enum { PRIMARY, L_FN, L_EMOJI, L_REACT, STOCK_QW, STOCK_FN, QUINN }; // layers
+enum { PRIMARY, L_FN, L_EMOJI, L_REACT, QUINN }; // layers
 
 #define Key_Sleep LCTRL(LGUI(Key_Q))
 
@@ -40,7 +40,7 @@ KEYMAPS(
     /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
     /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(L_FN),
 
-    Key_Sleep,         Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            LockLayer(STOCK_QW),
+    Key_Sleep,         Key_6,        Key_7,        Key_8,            Key_9,      Key_0,            ___,
     Key_Enter,         Key_Y,        Key_U,        Key_I,            Key_O,      Key_P,            Key_Equals,
     /**/               Key_H,        Key_J,        Key_K,            Key_L,      TOPSY(Semicolon), Key_Quote,
     TOPSY(Minus),      Key_N,        Key_M,        Key_Comma,        Key_Period, Key_Slash,        Key_Minus,
@@ -95,38 +95,6 @@ KEYMAPS(
     ___, ___,    ___,    ___,    /**/    /**/    /**/
     ___  /**/    /**/    /**/    /**/    /**/    /**/
 
-  ), [STOCK_QW] = KEYMAP_STACKED(
-
-    ___,          Key_1, Key_2, Key_3,           Key_4,         Key_5,       Key_LeftAlt,
-    Key_Backtick, Key_Q, Key_W, Key_E,           Key_R,         Key_T,       Key_Tab,
-    Key_PageUp,   Key_A, Key_S, Key_D,           Key_F,         Key_G,       /**/
-    Key_PageDown, Key_Z, Key_X, Key_C,           Key_V,         Key_B,       Key_Escape,
-    /**/          /**/   /**/   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
-    /**/          /**/   /**/   /**/             /**/           /**/         ShiftToLayer(STOCK_FN),
-
-    ___,                   Key_6,       Key_7,        Key_8,            Key_9,      Key_0,         ___,
-    Key_Enter,             Key_Y,       Key_U,        Key_I,            Key_O,      Key_P,         Key_Equals,
-    /**/                   Key_H,       Key_J,        Key_K,            Key_L,      Key_Semicolon, Key_Quote,
-    Key_RightAlt,          Key_N,       Key_M,        Key_Comma,        Key_Period, Key_Slash,     Key_Minus,
-    Key_RightShift,        Key_RightAlt, Key_Spacebar, Key_RightControl, /**/        /**/           /**/
-    ShiftToLayer(STOCK_FN) /**/         /**/          /**/              /**/        /**/           /**/
-
-  ), [STOCK_FN] =  KEYMAP_STACKED(
-
-    ___,      Key_F1,          Key_F2,     Key_F3, Key_F4,     Key_F5, Key_CapsLock,
-    Key_Tab,  ___,             ___,        ___,    ___,        ___,    ___,
-    Key_Home, ___,             ___,        ___,    ___,        ___,    /**/
-    Key_End,  Key_PrintScreen, Key_Insert, ___,    ___,        ___,    ___,
-    /**/      /**/             /**/        ___,    Key_Delete, ___,    ___,
-    /**/      /**/             /**/        /**/    /**/        /**/    ___,
-
-    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
-    Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
-     /**/                       Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
-    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-    ___,                        ___,                    Key_Enter,                ___,                      /**/             /**/              /**/
-    ___                         /**/                    /**/                      /**/                      /**/             /**/              /**/
-
   ), [QUINN] =  KEYMAP_STACKED(
 
     Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, Consumer_ChannelIncrement, M(TOGGLE_QUINN),
@@ -166,21 +134,11 @@ class : public kaleidoscope::plugin::LEDMode {
       cRGB red = CRGB(255, 0, 0);
       for (uint8_t r = 0; r < Kaleidoscope.device().matrix_rows; r++) {
         for (uint8_t c = 0; c < Kaleidoscope.device().matrix_columns; c++) {
-          if (Layer.isActive(STOCK_QW)) {
-            if (TK(0, 2) TK(0, 4) TK(0, 11) TK(0, 13) false) {
-              LEDControl.setCrgbAt(KeyAddr(r, c), blue);
-            } else if (TK(3, 1) TK(2, 2) TK(2, 3) TK(2, 4) TK(3, 5) TK(3, 10) TK(2, 11) TK(2, 12) TK(2, 13) TK(3, 14) false) {
-              LEDControl.setCrgbAt(KeyAddr(r, c), red);
-            } else {
-              LEDControl.setCrgbAt(KeyAddr(r, c), off);
-            }
-          } else {
-            Key k = Layer.lookupOnActiveLayer(KeyAddr(r, c));
-            Key layer_key = Layer.getKey(layer, KeyAddr(r, c));
-            // r:0;c:0 is program, which we don't want to show as a layer key really.
-            if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
-              LEDControl.setCrgbAt(KeyAddr(KeyAddr(r, c)), off);
-            }
+          Key k = Layer.lookupOnActiveLayer(KeyAddr(r, c));
+          Key layer_key = Layer.getKey(layer, KeyAddr(r, c));
+          // r:0;c:0 is program, which we don't want to show as a layer key really.
+          if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
+            LEDControl.setCrgbAt(KeyAddr(KeyAddr(r, c)), off);
           }
         }
       }
