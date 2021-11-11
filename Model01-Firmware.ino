@@ -121,29 +121,6 @@ bool overrideColor[Kaleidoscope.device().led_count];
 
 class : public kaleidoscope::plugin::LEDMode {
   public:
-    kaleidoscope::EventHandlerResult afterEachCycle() {
-      // partially-borrowed from
-      //  - https://github.com/bjc/Kaleidoscope-LayerHighlighter
-      //  - https://github.com/burke/dotfiles/blob/master/Documents/Arduino/Model01-Firmware/firmware.ino
-      uint8_t layer = Layer.mostRecent();
-      if (layer == PRIMARY) {
-        return kaleidoscope::EventHandlerResult::OK;
-      }
-      cRGB off = CRGB(0, 0, 0);
-      cRGB blue = CRGB(0, 0, 255);
-      cRGB red = CRGB(255, 0, 0);
-      for (uint8_t r = 0; r < Kaleidoscope.device().matrix_rows; r++) {
-        for (uint8_t c = 0; c < Kaleidoscope.device().matrix_columns; c++) {
-          Key k = Layer.lookupOnActiveLayer(KeyAddr(r, c));
-          Key layer_key = Layer.getKey(layer, KeyAddr(r, c));
-          // r:0;c:0 is program, which we don't want to show as a layer key really.
-          if ((k != layer_key) || (k == Key_NoKey) || (r == 0 && c == 0)) {
-            LEDControl.setCrgbAt(KeyAddr(KeyAddr(r, c)), off);
-          }
-        }
-      }
-      return kaleidoscope::EventHandlerResult::OK;
-    }
     void setValue(byte v) {
       rainbow_value = v;
     }
