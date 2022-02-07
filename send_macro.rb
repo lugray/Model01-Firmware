@@ -165,4 +165,14 @@ def string_to_macro(str)
   end
 end
 
-focus.command('macros.map', *string_to_macro(ARGV[0]), MACRO_ACTION_END, MACRO_ACTION_END)
+calculate_size = ARGV.delete('-s')
+
+def macros
+  ARGV.flat_map { |str| string_to_macro(str) + [MACRO_ACTION_END] } + [MACRO_ACTION_END]
+end
+
+if calculate_size
+  puts macros.size
+else
+  focus.command('macros.map', *macros)
+end

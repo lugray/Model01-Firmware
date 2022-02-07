@@ -19,7 +19,7 @@
 
 enum { E_A, E_B, E_C, E_D, E_E, E_F, E_G, E_H, E_I, E_J, E_K, E_L, E_M, E_N, E_O, E_P, E_Q, E_R, E_S, E_T, E_U, E_V, E_W, E_X, E_Y, E_Z, E_PLUS }; // Emoji Keys
 enum { MACRO_NOP, TOGGLE_QUINN }; // Macros
-enum { DM_ANY }; // Dynamic Macros
+enum { DM_A, DM_B, DM_C }; // Dynamic Macros
 static const int EMOJI = 128;
 static const int REACT = EMOJI | 64;
 #define E(k) M(E_ ## k|EMOJI)
@@ -27,7 +27,7 @@ static const int REACT = EMOJI | 64;
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
-enum { L_PRIMARY, L_FN, L_EMOJI, L_REACT, L_QUINN, L_QFN }; // layers
+enum { L_PRIMARY, L_FN, L_EMOJI, L_REACT, L_DM, L_QUINN, L_QFN }; // layers
 
 #define Sleep LCTRL(LGUI(Key_Q))
 #define WinUp LCTRL(LALT(Key_UpArrow))
@@ -67,10 +67,10 @@ KEYMAPS(
 
   ), [L_FN] = KEYMAP(
 
-    ___,          Key_F1,  Key_F2,  Key_F3,   Key_F4,     Key_F5, M(TOGGLE_QUINN), DM(DM_ANY), Key_F6, Key_F7,    Key_F8,  Key_F9, Key_F10,       Key_F11,
+    ___,          Key_F1,  Key_F2,  Key_F3,   Key_F4,     Key_F5, M(TOGGLE_QUINN), ___, Key_F6, Key_F7,    Key_F8,  Key_F9, Key_F10,       Key_F11,
     ___,          ___,     WinUp,   ___,      ___,        ___,    ___,             WinMax,     ___,    ___,       ___,     ___,    ___,           Key_F12,
     Key_PageUp,   WinLeft, WinDown, WinRight, ___,        ___,    /**/             /**/        Left,   Down,      Up,      Right,  Key_Semicolon, TOPSY(Quote),
-    Key_PageDown, ___,     ___,     ___,      ___,        ___,    ___,             Key_Minus,  ___,    Mute,      VolDown, VolUp,  TOPSY(Slash),  Key_Backslash,
+    Key_PageDown, ___,     ___,     ___,      ___,        ___,    ___,             Key_Minus,  ___,    Mute,      VolDown, VolUp,  TOPSY(Slash),  STL(DM),
     /**/          /**/     /**/     ___,      Key_Delete, ___,    ___,             ___,        ___,    Key_Enter, ___,     /**/    /**/           /**/
     /**/          /**/     /**/     /**/      /**/        /**/    STL(EMOJI),      STL(EMOJI), /**/    /**/       /**/     /**/    /**/           /**/
 
@@ -91,6 +91,15 @@ KEYMAPS(
     ___, R(Z), R(X), R(C), R(V), R(B), ___, ___, R(N), R(M), ___,  ___,  ___,  ___,
     /**/ /**/  /**/  ___,  ___,  ___,  ___, ___, ___,  ___,  ___,  /**/  /**/  /**/
     /**/ /**/  /**/  /**/  /**/  /**/  ___, ___  /**/  /**/  /**/  /**/  /**/  /**/
+
+  ), [L_DM] =  KEYMAP(
+
+    DM(DM_A), DM(DM_B), DM(DM_C), ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+    ___,      ___,      ___,      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+    ___,      ___,      ___,      ___, ___, ___, /**/ /**/ ___, ___, ___, ___, ___, ___,
+    ___,      ___,      ___,      ___, ___, ___, ___, ___, ___, ___, ___, ___, ___, ___,
+    /**/      /**/      /**/      ___, ___, ___, ___, ___, ___, ___, ___, /**/ /**/ /**/
+    /**/      /**/      /**/      /**/ /**/ /**/ ___, ___  /**/ /**/ /**/ /**/ /**/ /**/
 
   ), [L_QUINN] =  KEYMAP(
 
@@ -224,7 +233,7 @@ void setup() {
   SpaceCadet.map = spaceCadetMap;
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
-  DynamicMacros.reserve_storage(128);
+  DynamicMacros.reserve_storage(256);
 }
 
 void loop() {
