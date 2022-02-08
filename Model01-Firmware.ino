@@ -17,17 +17,12 @@
 #include "Kaleidoscope-EEPROM-Settings.h"
 #include "Kaleidoscope-DynamicMacros.h"
 
-enum { E_A, E_B, E_C, E_D, E_E, E_F, E_G, E_H, E_I, E_J, E_K, E_L, E_M, E_N, E_O, E_P, E_Q, E_R, E_S, E_T, E_U, E_V, E_W, E_X, E_Y, E_Z, E_PLUS }; // Emoji Keys
 enum { MACRO_NOP, TOGGLE_QUINN }; // Macros
 enum { DM_A, DM_B, DM_C }; // Dynamic Macros
-static const int EMOJI = 128;
-static const int REACT = EMOJI | 64;
-#define E(k) M(E_ ## k|EMOJI)
-#define R(k) M(E_ ## k|REACT)
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
-enum { L_PRIMARY, L_FN, L_EMOJI, L_REACT, L_DM, L_QUINN, L_QFN }; // layers
+enum { L_PRIMARY, L_FN, L_DM, L_QUINN, L_QFN }; // layers
 
 #define Sleep LCTRL(LGUI(Key_Q))
 #define WinUp LCTRL(LALT(Key_UpArrow))
@@ -58,7 +53,7 @@ enum { L_PRIMARY, L_FN, L_EMOJI, L_REACT, L_DM, L_QUINN, L_QFN }; // layers
 KEYMAPS(
   [L_PRIMARY] = KEYMAP(
 
-    STL(REACT),   Key_1, Key_2, Key_3, Key_4, Key_5, LEDNext, Sleep,      Key_6, Key_7,  Key_8,     Key_9,      Key_0,     Key_Backslash,
+    Key_Escape,   Key_1, Key_2, Key_3, Key_4, Key_5, LEDNext, Sleep,      Key_6, Key_7,  Key_8,     Key_9,      Key_0,     Key_Backslash,
     Key_Backtick, Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab, Key_Enter,  Key_Y, Key_U,  Key_I,     Key_O,      Key_P,     Key_Equals,
     Key_Home,     Key_A, Key_S, Key_D, Key_F, Key_G, /**/     /**/        Key_H, Key_J,  Key_K,     Key_L,      Key_Colon, Key_Quote,
     Key_End,      Key_Z, Key_X, Key_C, Key_V, Key_B, LAlt,    Underscore, Key_N, Key_M,  Key_Comma, Key_Period, Key_Slash, Key_Minus,
@@ -72,25 +67,7 @@ KEYMAPS(
     Key_PageUp,   WinLeft, WinDown, WinRight, ___,        ___,    /**/             /**/        Left,   Down,      Up,      Right,  Key_Semicolon, TOPSY(Quote),
     Key_PageDown, ___,     ___,     ___,      ___,        ___,    ___,             Key_Minus,  ___,    Mute,      VolDown, VolUp,  TOPSY(Slash),  STL(DM),
     /**/          /**/     /**/     ___,      Key_Delete, ___,    ___,             ___,        ___,    Key_Enter, ___,     /**/    /**/           /**/
-    /**/          /**/     /**/     /**/      /**/        /**/    STL(EMOJI),      STL(EMOJI), /**/    /**/       /**/     /**/    /**/           /**/
-
-  ), [L_EMOJI] = KEYMAP(
-
-    ___, ___,  ___,  ___,  ___,  ___,  ___, ___, ___,  ___,  ___,  ___,  ___,  ___,
-    ___, E(Q), E(W), E(E), E(R), E(T), ___, ___, E(Y), E(U), E(I), E(O), E(P), E(PLUS),
-    ___, E(A), E(S), E(D), E(F), E(G), /**/ /**/ E(H), E(J), E(K), E(L), ___,  ___,
-    ___, E(Z), E(X), E(C), E(V), E(B), ___, ___, E(N), E(M), ___,  ___,  ___,  ___,
-    /**/ /**/  /**/  ___,  ___,  ___,  ___, ___, ___,  ___,  ___,  /**/  /**/  /**/
-    /**/ /**/  /**/  /**/  /**/  /**/  ___, ___  /**/  /**/  /**/  /**/  /**/  /**/
-
-  ), [L_REACT] = KEYMAP(
-
-    ___, ___,  ___,  ___,  ___,  ___,  ___, ___, ___,  ___,  ___,  ___,  ___,  ___,
-    ___, R(Q), R(W), R(E), R(R), R(T), ___, ___, R(Y), R(U), R(I), R(O), R(P), R(PLUS),
-    ___, R(A), R(S), R(D), R(F), R(G), /**/ /**/ R(H), R(J), R(K), R(L), ___,  ___,
-    ___, R(Z), R(X), R(C), R(V), R(B), ___, ___, R(N), R(M), ___,  ___,  ___,  ___,
-    /**/ /**/  /**/  ___,  ___,  ___,  ___, ___, ___,  ___,  ___,  /**/  /**/  /**/
-    /**/ /**/  /**/  /**/  /**/  /**/  ___, ___  /**/  /**/  /**/  /**/  /**/  /**/
+    /**/          /**/     /**/     /**/      /**/        /**/    ___,      ___, /**/    /**/       /**/     /**/    /**/           /**/
 
   ), [L_DM] =  KEYMAP(
 
@@ -150,55 +127,20 @@ class : public kaleidoscope::plugin::LEDMode {
     uint16_t cycle_time = 10000;
 } ledRainbowEffect;
 
-static const char* emojiPstr(int emojiIndex) {
-  switch(emojiIndex) {
-    case E_A: return PSTR(":blobaww:");
-    case E_E: return PSTR(":eyes:");
-    case E_F: return PSTR(":facepalm:");
-    case E_H: return PSTR(":purple_heart:");
-    case E_J: return PSTR(":joy:");
-    case E_L: return PSTR(":lololol:");
-    case E_N: return PSTR(":noprobllama:");
-    case E_PLUS: return PSTR(":wizard-thumb:");
-    case E_S: return PSTR(":woman-shrugging:");
-    case E_T: return PSTR(":thanks-2:");
-    case E_U: return PSTR(":dancing_unicorn:");
-    case E_W: return PSTR(":thunkface:");
-    case E_Y: return PSTR(":this:");
-  }
-  return PSTR("");
-}
-
-static void slackReactMacro(int emojiIndex) {
-  Macros.type(PSTR("+"));
-  Macros.type(emojiPstr(emojiIndex));
-  Macros.play(MACRO(T(Enter)));
-}
-
-static void typeEmojiMacro(int emojiIndex) {
-  Macros.type(emojiPstr(emojiIndex));
-}
-
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   if (!keyToggledOn(keyState)) {
     return MACRO_NONE;
   }
-  if ((macroIndex & REACT) == REACT) {        // 11xxxxxx => Emoji Reaction
-    slackReactMacro(macroIndex & (~REACT));
-  } else if ((macroIndex & EMOJI) == EMOJI) { // 10xxxxxx => Emoji In-line
-    typeEmojiMacro(macroIndex & (~EMOJI));
-  } else {                                    // 0xxxxxxx => Other Macros
-    switch(macroIndex) {
-      case TOGGLE_QUINN:
-        if (Layer.mostRecent() == L_FN) {
-          Layer.move(L_QUINN);
-          WavepoolEffect.activate();
-        } else {
-          Layer.move(L_PRIMARY);
-          ledRainbowEffect.activate();
-        }
-        break;
+  switch(macroIndex) {
+  case TOGGLE_QUINN:
+    if (Layer.mostRecent() == L_FN) {
+      Layer.move(L_QUINN);
+      WavepoolEffect.activate();
+    } else {
+      Layer.move(L_PRIMARY);
+      ledRainbowEffect.activate();
     }
+    break;
   }
   return MACRO_NONE;
 }
