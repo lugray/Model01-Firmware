@@ -18,7 +18,7 @@
 #include <Kaleidoscope-Qukeys.h>
 
 enum { MACRO_NOP, QUINN }; // Macros
-enum { DM_A, DM_B, DM_C }; // Dynamic Macros
+enum { DM_ESC, DM_1, DM_2, DM_O }; // Dynamic Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
@@ -81,8 +81,8 @@ KEYMAPS(
     /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       /**/        /**/           /**/
     /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___           /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_DM]=KEYMAP(
-    DM(DM_A),     DM(DM_B), DM(DM_C), ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       ___,        ___,           ___,
+    DM(DM_ESC),   DM(DM_1), DM(DM_2), ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       DM(DM_O),   ___,           ___,
     ___,          ___,      ___,      ___,      ___,        ___,    /**/        /**/          ___,    ___,       ___,       ___,        ___,           ___,
     ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       ___,        ___,           ___,
     /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,          ___,    ___,       ___,       /**/        /**/           /**/
@@ -177,10 +177,11 @@ void setup() {
 
     kaleidoscope::plugin::Qukey(0, KeyAddr(3, 9), STL(FN)), // Right Palm
   )
+
   Kaleidoscope.setup();
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
-  DynamicMacros.reserve_storage(256);
+  DynamicMacros.reserve_storage(512);
 }
 
 void loop() {
