@@ -16,13 +16,19 @@
 #include "Kaleidoscope-EEPROM-Settings.h"
 #include "Kaleidoscope-DynamicMacros.h"
 #include <Kaleidoscope-Qukeys.h>
+#include "macros.h"
 
-enum { MACRO_NOP, QUINN }; // Macros
-enum { DM_ESC, DM_1, DM_2, DM_O }; // Dynamic Macros
+#include "kaleidoscope/KeyAddr.h"               // for KeyAddr
+#include "kaleidoscope/KeyEvent.h"              // for KeyEvent
+#include "kaleidoscope/KeyEventTracker.h"       // for KeyEventTracker
+#include "kaleidoscope/event_handler_result.h"  // for EventHandlerResult
+#include "kaleidoscope/plugin.h"                // for Plugin
+
+enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_O }; // Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
-enum { L_PRIMARY, L_FN, L_FN2, L_DM, L_QUINN, L_QFN }; // layers
+enum { L_PRIMARY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 
 #define Sleep LCTRL(LGUI(Key_Q))
 #define WinUp LCTRL(LALT(Key_UpArrow))
@@ -50,7 +56,7 @@ enum { L_PRIMARY, L_FN, L_FN2, L_DM, L_QUINN, L_QFN }; // layers
 #define Underscore TOPSY(Minus)
 #define Pipe TOPSY(Backslash)
 #define CSA(key) LCTRL(LSHIFT(LALT(Key_ ## key)))
-#define ZZ(key) LGUI(LCTRL(LSHIFT(LALT(Key_ ## key))))
+#define HYPER LGUI(LCTRL(LSHIFT(Key_LeftAlt)))
 #define LParen Key_LeftParen
 #define RParen Key_RightParen
 #define LBrace TOPSY(LeftBracket)
@@ -60,49 +66,130 @@ enum { L_PRIMARY, L_FN, L_FN2, L_DM, L_QUINN, L_QFN }; // layers
 
 KEYMAPS(
   [L_PRIMARY]=KEYMAP(
-    Key_Escape,   Key_1,    Key_2,    Key_3,    Key_4,      Key_5,  STL(FN2),   Sleep,      Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
-    Key_Backtick, Key_Q,    Key_W,    Key_E,    Key_R,      Key_T,  Key_Tab,    Key_Enter,  Key_Y,  Key_U,     Key_I,     Key_O,      Key_P,         Key_Equals,
-    Key_Home,     Key_A,    Key_S,    Key_D,    Key_F,      Key_G,  /**/        /**/        Key_H,  Key_J,     Key_K,     Key_L,      Key_Colon,     Key_Quote,
-    Key_End,      Key_Z,    Key_X,    Key_C,    Key_V,      Key_B,  Key_Escape, Underscore, Key_N,  Key_M,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
-    /**/          /**/      /**/      LCtrl,    BkSpc,      LCmd,   LShift,     RShift,     RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    STL(FN),    STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
+    Key_Escape,   Key_1,   Key_2,  Key_3,    Key_4,      Key_5,  HYPER,    Sleep,      Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
+    Key_Backtick, Key_Q,   Key_W,  Key_E,    Key_R,      Key_T,  Key_Tab,  Key_Enter,  Key_Y,  Key_U,     Key_I,     Key_O,      Key_P,         Key_Equals,
+    Key_Home,     Key_A,   Key_S,  Key_D,    Key_F,      Key_G,  /**/      /**/        Key_H,  Key_J,     Key_K,     Key_L,      Key_Colon,     Key_Quote,
+    Key_End,      Key_Z,   Key_X,  Key_C,    Key_V,      Key_B,  LAlt,     Underscore, Key_N,  Key_M,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
+    /**/          /**/     /**/    LCtrl,    BkSpc,      LCmd,   LShift,   RShift,     RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    STL(FN),  STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_FN]=KEYMAP(
-    ___,          Key_F1,   Key_F2,   Key_F3,   Key_F4,     Key_F5, M(QUINN),   ___,        Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
-    ___,          ___,      ___,      ___,      ___,        CSA(T), ___,        WinMax,     ___,    ___,       ___,       ___,        ___,           Key_F12,
-    Key_PageUp,   WinLeft,  CSA(S),   WinRight, ___,        ___,    /**/        /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
-    Key_PageDown, ___,      ___,      CSA(C),   ___,        CSA(B), ___,        Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(DM),
-    /**/          /**/      /**/      ___,      Key_Delete, ___,    ___,        ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
-  ),[L_FN2]=KEYMAP(
-    ZZ(Escape),   ZZ(1),    ZZ(2),    ZZ(3),    ZZ(4),      ZZ(5),  ___,        ___,        ZZ(6),  ZZ(7),     ZZ(8),     ZZ(9),      ZZ(0),         ZZ(Backslash),
-    ZZ(Backtick), ZZ(Q),    ZZ(W),    ZZ(E),    ZZ(R),      ZZ(T),  ZZ(Tab),    ZZ(Enter),  ZZ(Y),  ZZ(U),     ZZ(I),     ZZ(O),      ZZ(P),         ZZ(Equals),
-    ZZ(Home),     ZZ(A),    ZZ(S),    ZZ(D),    ZZ(F),      ZZ(G),  /**/        /**/        ZZ(H),  ZZ(J),     ZZ(K),     ZZ(L),      ZZ(Semicolon), ZZ(Quote),
-    ZZ(End),      ZZ(Z),    ZZ(X),    ZZ(C),    ZZ(V),      ZZ(B),  ___,        ___,        ZZ(N),  ZZ(M),     ZZ(Comma), ZZ(Period), ZZ(Slash),     ZZ(Minus),
-    /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
-  ),[L_DM]=KEYMAP(
-    DM(DM_ESC),   DM(DM_1), DM(DM_2), ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       DM(DM_O),   ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    /**/        /**/        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
+    ___,          Key_F1,  Key_F2, Key_F3,   Key_F4,     Key_F5, M(QUINN), ___,        Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
+    ___,          ___,     ___,    ___,      ___,        CSA(T), ___,      WinMax,     ___,    ___,       ___,       ___,        ___,           Key_F12,
+    Key_PageUp,   WinLeft, CSA(S), WinRight, ___,        ___,    /**/      /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
+    Key_PageDown, ___,     ___,    CSA(C),   ___,        CSA(B), ___,      Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
+    /**/          /**/     /**/    ___,      Key_Delete, ___,    ___,      ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    ___,      ___         /**/    /**/       /**/       /**/        /**/           /**/
+  ),[L_M]=KEYMAP(
+    M(M_ESC),     M(M_1),  M(M_2), ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       M(M_O),     ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    /**/      /**/        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    /**/          /**/     /**/    ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    ___,      ___         /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_QUINN]=KEYMAP(
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   /**/        /**/        KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    /**/          /**/      /**/      KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    STL(QFN),   STL(QFN)    /**/    /**/       /**/       /**/        /**/           /**/
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   /**/      /**/        KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    /**/          /**/     /**/    KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    STL(QFN), STL(QFN)    /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_QFN]=KEYMAP(
-    ___,          ___,      ___,      ___,      ___,        ___,    M(QUINN),   ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    /**/        /**/        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
+    ___,          ___,     ___,    ___,      ___,        ___,    M(QUINN), ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    /**/      /**/        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    /**/          /**/     /**/    ___,      ___,        ___,    ___,      ___,        ___,    ___,       ___,       /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    ___,      ___         /**/    /**/       /**/       /**/        /**/           /**/
   )
 )
+namespace kaleidoscope {
+  namespace plugin {
+    class Chord : public Plugin {
+      public:
+        uint16_t timeout = 50;
+            
+        EventHandlerResult onKeyswitchEvent(KeyEvent &event) {
+          if (event_tracker_.shouldIgnore(event)) {
+            return EventHandlerResult::OK;
+          }
+
+          if(event.key == Key_J || event.key == Key_K || event.key == Key_D || event.key == Key_F) {
+            if(keyToggledOn(event.state) && !has_queued_event_()) {
+              queued_event_ = event;
+              start_time_ = Runtime.millisAtCycleStart();
+              return EventHandlerResult::ABORT;
+            } else if (keyToggledOn(event.state) && has_queued_event_() && queued_event_.key != event.key) {
+              Key target_key = getChord(queued_event_.key, event.key);
+              if(target_key != Key_NoKey) {
+                KeyEvent new_event = KeyEvent(KeyAddr::none(), INJECTED | IS_PRESSED, target_key);
+                Runtime.handleKeyEvent(new_event);
+                new_event.state = INJECTED | WAS_PRESSED;
+                Runtime.handleKeyEvent(new_event);
+                queued_event_.key = Key_NoKey;
+                return EventHandlerResult::ABORT;
+              }
+            }
+          }
+
+          if (has_queued_event_()) {
+            sendQueuedEvent();
+          }
+
+          return EventHandlerResult::OK;
+        }
+
+        EventHandlerResult afterEachCycle() {
+          if (Runtime.hasTimeExpired(start_time_, timeout) && has_queued_event_()) {
+            sendQueuedEvent();
+          }
+          return EventHandlerResult::OK;
+        }
+
+        template<uint8_t _chords_size>
+        void configure(Key const (&chords)[_chords_size]) {
+          chords_ = chords;
+          chords_size_ = _chords_size;
+        }
+
+      private:
+        Key getChord(Key key1, Key key2) {
+          if(key1 == Key_J && key2 == Key_K) {
+            return Key_Escape;
+          } else if(key1 == Key_K && key2 == Key_J) {
+            return Key_Escape;
+          } else if(key1 == Key_D && key2 == Key_F) {
+            return LCTRL(Key_RightBracket);
+          } else if(key1 == Key_F && key2 == Key_D) {
+            return LCTRL(Key_RightBracket);
+          } else {
+            return Key_NoKey;
+          }
+        }
+        void sendQueuedEvent() {
+          KeyEventId stored_id = queued_event_.id();
+          KeyEvent restored_event = KeyEvent(queued_event_.addr, queued_event_.state | INJECTED, queued_event_.key, stored_id);
+          Runtime.handleKeyEvent(restored_event);
+          queued_event_.key = Key_NoKey;
+        }
+        KeyEventTracker event_tracker_;
+        KeyEvent queued_event_ = KeyEvent(KeyAddr::none(), INJECTED | IS_PRESSED, Key_NoKey);
+        bool has_queued_event_() {
+          return queued_event_.key != Key_NoKey;
+        }
+        uint16_t start_time_;
+        Key const *chords_{nullptr};
+        uint8_t chords_size_{0};
+    };
+  }
+}
+kaleidoscope::plugin::Chord Chord;
+
+#define CHORDS(chord_defs...) {                        \
+  static Key const chord_def[] PROGMEM = {chord_defs}; \
+  Chord.configure(chord_def);                          \
+}
+#define CHORD(chord_keys...) chord_keys, Key_NoKey
+
 
 class : public kaleidoscope::plugin::LEDMode {
   protected:
@@ -132,35 +219,38 @@ class : public kaleidoscope::plugin::LEDMode {
     uint16_t cycle_time = 10000;
 } ledRainbowEffect;
 
-const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
-  if (!keyToggledOn(keyState)) {
+const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
+  if (!keyToggledOn(event.state)) {
     return MACRO_NONE;
   }
-  switch(macroIndex) {
-  case QUINN:
-    if (Layer.mostRecent() == L_FN) {
-      Layer.move(L_QUINN);
-      WavepoolEffect.activate();
-    } else {
-      Layer.move(L_PRIMARY);
-      ledRainbowEffect.activate();
-    }
-    break;
+  switch(macro_id) {
+    case QUINN:
+      if (Layer.mostRecent() == L_FN) {
+        Layer.move(L_QUINN);
+        WavepoolEffect.activate();
+      } else {
+        Layer.move(L_PRIMARY);
+        ledRainbowEffect.activate();
+      }
+      break;
+    case M_ESC: MACRO_ESC;
+    case M_1: MACRO_1;
+    case M_2: MACRO_2;
+    case M_O: MACRO_O;
   }
   return MACRO_NONE;
 }
 
 KALEIDOSCOPE_INIT_PLUGINS(
+  TopsyTurvy,
   Qukeys,
-  Focus,
+  Chord,
   LEDControl,
   LEDOff,
   ledRainbowEffect,
   WavepoolEffect,
-  TopsyTurvy,
   Macros,
-  EEPROMSettings,
-  DynamicMacros
+  EEPROMSettings
 );
 
 void setup() {
@@ -173,15 +263,17 @@ void setup() {
     kaleidoscope::plugin::Qukey(0, KeyAddr(2, 8), RBrace),    // Right Thumb 2
     kaleidoscope::plugin::Qukey(0, KeyAddr(0, 8), RBracket),   // Right Thumb 0
 
-    kaleidoscope::plugin::Qukey(0, KeyAddr(2, 6), LAlt),    // Right of B
-
     kaleidoscope::plugin::Qukey(0, KeyAddr(3, 9), Key_Semicolon), // Right Palm
+  )
+
+  CHORDS(
+    CHORD(Key_J, Key_K), Key_Escape,
+    CHORD(Key_D, Key_F), LCTRL(Key_RightBracket),
   )
 
   Kaleidoscope.setup();
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
-  DynamicMacros.reserve_storage(512);
 }
 
 void loop() {
