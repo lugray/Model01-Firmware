@@ -7,7 +7,6 @@
 #endif
 
 #include "Kaleidoscope.h"
-#include "Kaleidoscope-FocusSerial.h"
 #include "Kaleidoscope-Macros.h"
 #include "Kaleidoscope-LEDControl.h"
 #include "Kaleidoscope-LED-Wavepool.h"
@@ -148,13 +147,12 @@ const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
 }
 
 KALEIDOSCOPE_INIT_PLUGINS(
+  TopsyTurvy,
   Qukeys,
-  Focus,
   LEDControl,
   LEDOff,
   ledRainbowEffect,
   WavepoolEffect,
-  TopsyTurvy,
   Macros,
   EEPROMSettings
 );
