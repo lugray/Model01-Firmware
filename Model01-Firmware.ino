@@ -16,13 +16,13 @@
 #include "Kaleidoscope-EEPROM-Settings.h"
 #include "Kaleidoscope-DynamicMacros.h"
 #include <Kaleidoscope-Qukeys.h>
+#include "macros.h"
 
-enum { MACRO_NOP, QUINN }; // Macros
-enum { DM_ESC, DM_1, DM_2, DM_O }; // Dynamic Macros
+enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_O }; // Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
-enum { L_PRIMARY, L_FN, L_DM, L_QUINN, L_QFN }; // layers
+enum { L_PRIMARY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 
 #define Sleep LCTRL(LGUI(Key_Q))
 #define WinUp LCTRL(LALT(Key_UpArrow))
@@ -60,40 +60,40 @@ enum { L_PRIMARY, L_FN, L_DM, L_QUINN, L_QFN }; // layers
 
 KEYMAPS(
   [L_PRIMARY]=KEYMAP(
-    Key_Escape,   Key_1,    Key_2,    Key_3,    Key_4,      Key_5,  HYPER,      Sleep,      Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
-    Key_Backtick, Key_Q,    Key_W,    Key_E,    Key_R,      Key_T,  Key_Tab,    Key_Enter,  Key_Y,  Key_U,     Key_I,     Key_O,      Key_P,         Key_Equals,
-    Key_Home,     Key_A,    Key_S,    Key_D,    Key_F,      Key_G,  /**/        /**/        Key_H,  Key_J,     Key_K,     Key_L,      Key_Colon,     Key_Quote,
-    Key_End,      Key_Z,    Key_X,    Key_C,    Key_V,      Key_B,  Key_Escape, Underscore, Key_N,  Key_M,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
-    /**/          /**/      /**/      LCtrl,    BkSpc,      LCmd,   LShift,     RShift,     RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    STL(FN),    STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
+    Key_Escape,   Key_1,   Key_2,  Key_3,    Key_4,      Key_5,  HYPER,      Sleep,      Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
+    Key_Backtick, Key_Q,   Key_W,  Key_E,    Key_R,      Key_T,  Key_Tab,    Key_Enter,  Key_Y,  Key_U,     Key_I,     Key_O,      Key_P,         Key_Equals,
+    Key_Home,     Key_A,   Key_S,  Key_D,    Key_F,      Key_G,  /**/        /**/        Key_H,  Key_J,     Key_K,     Key_L,      Key_Colon,     Key_Quote,
+    Key_End,      Key_Z,   Key_X,  Key_C,    Key_V,      Key_B,  Key_Escape, Underscore, Key_N,  Key_M,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
+    /**/          /**/     /**/    LCtrl,    BkSpc,      LCmd,   LShift,     RShift,     RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    STL(FN),    STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_FN]=KEYMAP(
-    ___,          Key_F1,   Key_F2,   Key_F3,   Key_F4,     Key_F5, M(QUINN),   ___,        Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
-    ___,          ___,      ___,      ___,      ___,        CSA(T), ___,        WinMax,     ___,    ___,       ___,       ___,        ___,           Key_F12,
-    Key_PageUp,   WinLeft,  CSA(S),   WinRight, ___,        ___,    /**/        /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
-    Key_PageDown, ___,      ___,      CSA(C),   ___,        CSA(B), ___,        Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(DM),
-    /**/          /**/      /**/      ___,      Key_Delete, ___,    ___,        ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
-  ),[L_DM]=KEYMAP(
-    DM(DM_ESC),   DM(DM_1), DM(DM_2), ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       DM(DM_O),   ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    /**/        /**/        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
+    ___,          Key_F1,  Key_F2, Key_F3,   Key_F4,     Key_F5, M(QUINN),   ___,        Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
+    ___,          ___,     ___,    ___,      ___,        CSA(T), ___,        WinMax,     ___,    ___,       ___,       ___,        ___,           Key_F12,
+    Key_PageUp,   WinLeft, CSA(S), WinRight, ___,        ___,    /**/        /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
+    Key_PageDown, ___,     ___,    CSA(C),   ___,        CSA(B), ___,        Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
+    /**/          /**/     /**/    ___,      Key_Delete, ___,    ___,        ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
+  ),[L_M]=KEYMAP(
+    M(M_ESC),     M(M_1),  M(M_2), ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       M(M_O),     ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    /**/        /**/        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    /**/          /**/     /**/    ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_QUINN]=KEYMAP(
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   /**/        /**/        KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,     KNOP,     KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    /**/          /**/      /**/      KNOP,     KNOP,       KNOP,   KNOP,       KNOP,       KNOP,   KNOP,      KNOP,      /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    STL(QFN),   STL(QFN)    /**/    /**/       /**/       /**/        /**/           /**/
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   /**/      /**/        KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    KNOP,         KNOP,    KNOP,   KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
+    /**/          /**/     /**/    KNOP,     KNOP,       KNOP,   KNOP,     KNOP,       KNOP,   KNOP,      KNOP,      /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    STL(QFN), STL(QFN)    /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_QFN]=KEYMAP(
-    ___,          ___,      ___,      ___,      ___,        ___,    M(QUINN),   ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    /**/        /**/        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,      ___,      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    /**/          /**/      /**/      ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/      /**/      /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
+    ___,          ___,     ___,    ___,      ___,        ___,    M(QUINN),   ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    /**/        /**/        ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,     ___,    ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       ___,        ___,           ___,
+    /**/          /**/     /**/    ___,      ___,        ___,    ___,        ___,        ___,    ___,       ___,       /**/        /**/           /**/
+    /**/          /**/     /**/    /**/      /**/        /**/    ___,        ___         /**/    /**/       /**/       /**/        /**/           /**/
   )
 )
 
@@ -125,20 +125,24 @@ class : public kaleidoscope::plugin::LEDMode {
     uint16_t cycle_time = 10000;
 } ledRainbowEffect;
 
-const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
-  if (!keyToggledOn(keyState)) {
+const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
+  if (!keyToggledOn(event.state)) {
     return MACRO_NONE;
   }
-  switch(macroIndex) {
-  case QUINN:
-    if (Layer.mostRecent() == L_FN) {
-      Layer.move(L_QUINN);
-      WavepoolEffect.activate();
-    } else {
-      Layer.move(L_PRIMARY);
-      ledRainbowEffect.activate();
-    }
-    break;
+  switch(macro_id) {
+    case QUINN:
+      if (Layer.mostRecent() == L_FN) {
+        Layer.move(L_QUINN);
+        WavepoolEffect.activate();
+      } else {
+        Layer.move(L_PRIMARY);
+        ledRainbowEffect.activate();
+      }
+      break;
+    case M_ESC: MACRO_ESC;
+    case M_1: MACRO_1;
+    case M_2: MACRO_2;
+    case M_O: MACRO_O;
   }
   return MACRO_NONE;
 }
@@ -152,8 +156,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   WavepoolEffect,
   TopsyTurvy,
   Macros,
-  EEPROMSettings,
-  DynamicMacros
+  EEPROMSettings
 );
 
 void setup() {
@@ -174,7 +177,6 @@ void setup() {
   Kaleidoscope.setup();
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
-  DynamicMacros.reserve_storage(512);
 }
 
 void loop() {
