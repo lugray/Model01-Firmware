@@ -18,7 +18,7 @@
 #include <Kaleidoscope-Chord.h>
 #include "macros.h"
 
-enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_O }; // Macros
+enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_O, M_UP }; // Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
@@ -139,6 +139,7 @@ const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
     case M_1: MACRO_1;
     case M_2: MACRO_2;
     case M_O: MACRO_O;
+    case M_UP: return Macros.type(PSTR("../"));
   }
   return MACRO_NONE;
 }
@@ -172,6 +173,7 @@ void setup() {
     CHORD(Key_J, Key_K), Key_Escape,
     CHORD(Key_K, Key_L), Key_Enter,
     CHORD(Key_D, Key_F), LCTRL(Key_RightBracket),
+    CHORD(Key_S, Key_D), M(M_UP),
   )
 
   Kaleidoscope.setup();
