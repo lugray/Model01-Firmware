@@ -170,6 +170,7 @@ void setup() {
 
   CHORDS(
     CHORD(Key_J, Key_K), Key_Escape,
+    CHORD(Key_K, Key_L), Key_Enter,
     CHORD(Key_D, Key_F), LCTRL(Key_RightBracket),
   )
 
