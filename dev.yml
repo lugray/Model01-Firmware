@@ -3,6 +3,3 @@ name: keyboard
 up:
   - ruby: 3.1.0
   - bundler
-
-env:
-  FQBN: keyboardio:avr:model01
