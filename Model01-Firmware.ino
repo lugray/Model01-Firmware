@@ -18,7 +18,7 @@
 #include <Kaleidoscope-Chord.h>
 #include "macros.h"
 
-enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_O, M_UP }; // Macros
+enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_UP }; // Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 
@@ -53,6 +53,7 @@ enum { L_PRIMARY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 #define RBrace TOPSY(RightBracket)
 #define LBracket Key_LeftBracket
 #define RBracket Key_RightBracket
+#define LEDNext Key_LEDEffectNext
 
 KEYMAPS(
   [L_PRIMARY]=KEYMAP(
@@ -63,15 +64,15 @@ KEYMAPS(
     /**/          /**/    /**/    LCtrl,  BkSpc,      LCmd,   LShift,    RShift,     RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
     /**/          /**/    /**/    /**/    /**/        /**/    STL(FN),   STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_FN]=KEYMAP(
-    ___,          Key_F1, Key_F2, Key_F3, Key_F4,     Key_F5, M(QUINN),  ___,        Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
+    ___,          Key_F1, Key_F2, Key_F3, Key_F4,     Key_F5, M(QUINN),  LEDNext,    Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
     ___,          Win(Q), Win(W), Win(E), ___,        CSA(T), ___,       Win(Enter), Win(Y), Win(U),    Win(I),    Win(O),     Win(P),        Key_F12,
     Key_PageUp,   Win(A), CSA(S), Win(D), ___,        ___,    /**/       /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
-    Key_PageDown, Win(Z), Win(X), Win(C), ___,        CSA(B), ___,       Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
+    Key_PageDown, Win(Z), Win(X), Win(C), Win(V),     CSA(B), ___,       Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
     /**/          /**/    /**/    ___,    Key_Delete, ___,    ___,       ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
     /**/          /**/    /**/    /**/    /**/        /**/    ___,       ___,        /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_M]=KEYMAP(
     M(M_ESC),     M(M_1), M(M_2), ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       M(M_O),     ___,           ___,
+    ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
     ___,          ___,    ___,    ___,    ___,        ___,    /**/       /**/        ___,    ___,       ___,       ___,        ___,           ___,
     ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
     /**/          /**/    /**/    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       /**/        /**/           /**/
@@ -138,7 +139,6 @@ const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
     case M_ESC: MACRO_ESC;
     case M_1: MACRO_1;
     case M_2: MACRO_2;
-    case M_O: MACRO_O;
     case M_UP: return Macros.type(PSTR("../"));
   }
   return MACRO_NONE;
