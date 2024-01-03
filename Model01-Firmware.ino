@@ -18,7 +18,7 @@
 #include <Kaleidoscope-Chord.h>
 #include "macros.h"
 
-enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_e, M_UP }; // Macros
+enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_F, M_G, M_UP }; // Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 #define MTL(l) MoveToLayer(L_ ## l)
@@ -80,8 +80,8 @@ KEYMAPS(
     /**/          /**/    /**/    /**/    /**/        /**/    ___,          ___,         /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_M]=KEYMAP(
     M(M_ESC),     M(M_1), M(M_2), ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    M(M_e), ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    /**/          /**/         ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,    ___,    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,    ___,    ___,    M(M_F),     M(M_G), /**/          /**/         ___,    ___,       ___,       ___,        ___,           ___,
     ___,          ___,    ___,    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
     /**/          /**/    /**/    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       /**/        /**/           /**/
     /**/          /**/    /**/    /**/    /**/        /**/    ___,          ___          /**/    /**/       /**/       /**/        /**/           /**/
@@ -147,7 +147,8 @@ const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
     case M_ESC: MACRO_ESC;
     case M_1: MACRO_1;
     case M_2: MACRO_2;
-    case M_e: MACRO_E;
+    case M_F: MACRO_F;
+    case M_G: MACRO_G;
     case M_UP: return Macros.type(PSTR("../"));
   }
   return MACRO_NONE;
