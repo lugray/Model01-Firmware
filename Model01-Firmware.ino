@@ -180,12 +180,12 @@ void setup() {
   )
 
   CHORDS(
-    CHORD(Key_J, Key_K), Key_Escape,
-    CHORD(Key_K, Key_L), Key_Enter,
-    CHORD(Key_D, Key_F), Key_Tab,
-    CHORD(Key_S, Key_D), M(M_UP),
+    CHORD(Key_J, Key_K),        Key_Escape,
+    CHORD(Key_K, Key_L),        Key_Enter,
+    CHORD(Key_D, Key_F),        Key_Tab,
+    CHORD(Key_S, Key_D),        M(M_UP),
     CHORD(Key_S, Key_D, Key_F), LCTRL(RBracket),
-    CHORD(Up, Right), Win(Enter), // Fn + J + K = Fn + Enter
+    CHORD(Up, Right),           Win(Enter), // Fn + J + K = Fn + Enter
   )
 
   Kaleidoscope.setup();
