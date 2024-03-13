@@ -56,6 +56,8 @@ enum { L_PRIMARY, L_GAME, L_FN, L_M, L_QUINN, L_QFN }; // layers
 #define RBracket Key_RightBracket
 #define LEDNext Key_LEDEffectNext
 
+constexpr Key KMod{kaleidoscope::ranges::SAFE_START};
+
 KEYMAPS(
   [L_PRIMARY]=KEYMAP(
     Key_NoKey,    Key_1,  Key_2,  Key_3,  Key_4,      Key_5,  HYPER,        Sleep,       Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
@@ -82,7 +84,7 @@ KEYMAPS(
     M(M_ESC),     M(M_1), M(M_2), ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
     ___,          ___,    ___,    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
     ___,          ___,    ___,    ___,    M(M_F),     M(M_G), /**/          /**/         ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        ___,           ___,
+    ___,          ___,    ___,    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       ___,        KMod,          ___,
     /**/          /**/    /**/    ___,    ___,        ___,    ___,          ___,         ___,    ___,       ___,       /**/        /**/           /**/
     /**/          /**/    /**/    /**/    /**/        /**/    ___,          ___          /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_QUINN]=KEYMAP(
@@ -130,6 +132,17 @@ class : public kaleidoscope::plugin::LEDMode {
     uint16_t cycle_time = 10000;
 } ledRainbowEffect;
 
+bool isKModHeld() {
+  for (Key key : kaleidoscope::live_keys.all()) {
+    if (key == KMod) {
+      return true;
+    }
+  }
+  return false;
+}
+
+#define MAYBE_ENTER if (!isKModHeld()) { Macros.type(PSTR("\n")); } break;
+
 const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
   if (!keyToggledOn(event.state)) {
     return MACRO_NONE;
@@ -144,12 +157,12 @@ const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
         ledRainbowEffect.activate();
       }
       break;
-    case M_ESC: MACRO_ESC;
-    case M_1: MACRO_1;
-    case M_2: MACRO_2;
-    case M_F: MACRO_F;
-    case M_G: MACRO_G;
-    case M_UP: return Macros.type(PSTR("../"));
+    case M_ESC: MACRO_ESC; MAYBE_ENTER;
+    case M_1: MACRO_1; MAYBE_ENTER;
+    case M_2: MACRO_2; MAYBE_ENTER;
+    case M_F: MACRO_F; MAYBE_ENTER;
+    case M_G: MACRO_G; MAYBE_ENTER;
+    case M_UP: Macros.type(PSTR("../")); break;
   }
   return MACRO_NONE;
 }
