@@ -23,7 +23,7 @@ enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_F, M_G, M_UP }; // Macros
 #define STL(l) ShiftToLayer(L_ ## l)
 #define MTL(l) MoveToLayer(L_ ## l)
 
-enum { L_PRIMARY, L_GAME, L_FN, L_M, L_QUINN, L_QFN }; // layers
+enum { L_PRIMARY, L_QWERTY, L_GAME, L_FN, L_M, L_QUINN, L_QFN }; // layers
 
 #define Win(x) LCTRL(LALT(Key_ ## x))
 #define Sleep LCTRL(LGUI(Key_Q))
@@ -64,7 +64,14 @@ constexpr Key KMod{kaleidoscope::ranges::SAFE_START};
 
 KEYMAPS(
   [L_PRIMARY]=KEYMAP(
-    Key_NoKey,    Key_1,  Key_2,  Key_3,  Key_4,      Key_5,     HYPER,        Sleep,       Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
+    Key_NoKey,    Key_1,  Key_2,  Key_3,  Key_4,      Key_5,     MTL(QWERTY),  Sleep,       Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
+    Key_Backtick, Key_Q,  Key_W,  Key_F,  Key_P,      Key_B,     SpaceLeft,    SpaceRight,  Key_J,  Key_L,     Key_U,     Key_Y,      Key_Semicolon, Key_Equals,
+    Key_Home,     Key_A,  Key_R,  Key_S,  Key_T,      Key_G,     /**/          /**/         Key_M,  Key_N,     Key_E,     Key_I,      Key_O,         Key_Quote,
+    Key_End,      Key_Z,  Key_X,  Key_C,  Key_D,      Key_V,     LAlt,         Underscore,  Key_K,  Key_H,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
+    /**/          /**/    /**/    LCtrl,  BkSpc,      LCmd,      LShift,       RShift,      RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
+    /**/          /**/    /**/    /**/    /**/        /**/       STL(FN),      STL(FN)      /**/    /**/       /**/       /**/        /**/           /**/
+  ),[L_QWERTY]=KEYMAP(
+    Key_NoKey,    Key_1,  Key_2,  Key_3,  Key_4,      Key_5,     MTL(PRIMARY), Sleep,       Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
     Key_Backtick, Key_Q,  Key_W,  Key_E,  Key_R,      Key_T,     SpaceLeft,    SpaceRight,  Key_Y,  Key_U,     Key_I,     Key_O,      Key_P,         Key_Equals,
     Key_Home,     Key_A,  Key_S,  Key_D,  Key_F,      Key_G,     /**/          /**/         Key_H,  Key_J,     Key_K,     Key_L,      Key_Colon,     Key_Quote,
     Key_End,      Key_Z,  Key_X,  Key_C,  Key_V,      Key_B,     LAlt,         Underscore,  Key_N,  Key_M,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
@@ -193,21 +200,28 @@ void setup() {
     kaleidoscope::plugin::Qukey(0, KeyAddr(2, 8), RBrace),    // Right Thumb 2
     kaleidoscope::plugin::Qukey(0, KeyAddr(0, 8), RBracket),   // Right Thumb 0
 
-    kaleidoscope::plugin::Qukey(0, KeyAddr(3, 9), Key_Semicolon), // Right Palm
+    kaleidoscope::plugin::Qukey(0, KeyAddr(3, 9), Key_Colon), // Right Palm
   )
 
   CHORDS(
     CHORD(Key_J, Key_K),        Key_Escape,
+    CHORD(Key_N, Key_E),        Key_Escape, // Colemak
     CHORD(Key_K, Key_L),        Key_Enter,
+    CHORD(Key_E, Key_I),        Key_Enter, // Colemak
     CHORD(Key_D, Key_F),        Key_Tab,
+    CHORD(Key_S, Key_T),        Key_Tab, // Colemak
     CHORD(Key_S, Key_D),        M(M_UP),
+    CHORD(Key_R, Key_S),        M(M_UP), // Colemak
     CHORD(Key_S, Key_D, Key_F), LCTRL(RBracket),
+    CHORD(Key_R, Key_S, Key_T), LCTRL(RBracket), // Colemak
     CHORD(Up, Right),           Win(Enter), // Fn + J + K = Fn + Enter
+    CHORD(BkSpc, SpcBar),       LALT(LShift)
   )
 
   Kaleidoscope.setup();
   WavepoolEffect.idle_timeout = 0;
   ledRainbowEffect.activate();
+  Chord.setTimeout(10);
 }
 
 void loop() {
