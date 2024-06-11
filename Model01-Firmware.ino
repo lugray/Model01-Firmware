@@ -57,6 +57,11 @@ enum { L_PRIMARY, L_QWERTY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 #define TabLeft LCTRL(LSHIFT(Key_Tab))
 #define SpaceRight LCTRL(Right)
 #define SpaceLeft LCTRL(Left)
+#define AM(x) LALT(LSHIFT(Key_ ## x))
+#define AM2(x) LCTRL(LALT(LSHIFT(Key_ ## x))
+#define AM_MAKE_MAIN AM(Enter)
+#define AM_NEXT AM(J)
+#define AM_PREV AM(K)
 
 constexpr Key KMod{kaleidoscope::ranges::SAFE_START};
 
@@ -77,7 +82,7 @@ KEYMAPS(
     /**/          /**/    /**/    /**/    /**/        /**/    STL(FN),      STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_FN]=KEYMAP(
     ___,          Key_F1, Key_F2, Key_F3, Key_F4,     Key_F5, M(QUINN),     LEDNext,    Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
-    ___,          ___,    ___,    ___,    ___,        ___,    TabLeft,      TabRight,   ___,    ___,       ___,       ___,        ___,           Key_F12,
+    ___,          ___,    ___,    ___,    ___,        ___,    TabLeft,      TabRight,   ___,    AM_NEXT,   AM_PREV,   ___,        ___,           Key_F12,
     Key_PageUp,   ___,    ___,    ___,    ___,        ___,    /**/          /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
     Key_PageDown, ___,    ___,    ___,    ___,        ___,    ___,          Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
     /**/          /**/    /**/    ___,    Key_Delete, ___,    ___,          ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
@@ -207,6 +212,8 @@ void setup() {
   )
 
   CHORDS(
+    CHORD(Up, Right),           AM_MAKE_MAIN, // Fn + J + K = Fn + Enter
+
     CHORD(Key_J, Key_K),        Key_Escape,
     CHORD(Key_N, Key_E),        Key_Escape, // Colemak
     CHORD(Key_K, Key_L),        Key_Enter,
