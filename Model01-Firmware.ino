@@ -25,7 +25,6 @@ enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_F, M_G, M_UP }; // Macros
 
 enum { L_PRIMARY, L_QWERTY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 
-#define Win(x) LCTRL(LALT(Key_ ## x))
 #define Sleep LCTRL(LGUI(Key_Q))
 #define Mute Consumer_Mute
 #define VolDown Consumer_VolumeDecrement
@@ -46,7 +45,6 @@ enum { L_PRIMARY, L_QWERTY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 #define Key_Colon TOPSY(Semicolon)
 #define Underscore TOPSY(Minus)
 #define Pipe TOPSY(Backslash)
-#define CSA(key) LCTRL(LSHIFT(LALT(Key_ ## key)))
 #define HYPER LGUI(LCTRL(LSHIFT(Key_LeftAlt)))
 #define LParen Key_LeftParen
 #define RParen Key_RightParen
@@ -79,9 +77,9 @@ KEYMAPS(
     /**/          /**/    /**/    /**/    /**/        /**/    STL(FN),      STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_FN]=KEYMAP(
     ___,          Key_F1, Key_F2, Key_F3, Key_F4,     Key_F5, M(QUINN),     LEDNext,    Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
-    ___,          Win(Q), Win(W), Win(E), ___,        CSA(T), TabLeft,      TabRight,   Win(Y), Win(U),    Win(I),    Win(O),     Win(P),        Key_F12,
-    Key_PageUp,   Win(A), CSA(S), Win(D), ___,        ___,    /**/          /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
-    Key_PageDown, Win(Z), Win(X), Win(C), Win(V),     CSA(B), ___,          Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
+    ___,          ___,    ___,    ___,    ___,        ___,    TabLeft,      TabRight,   ___,    ___,       ___,       ___,        ___,           Key_F12,
+    Key_PageUp,   ___,    ___,    ___,    ___,        ___,    /**/          /**/        Left,   Down,      Up,        Right,      Key_Semicolon, TOPSY(Quote),
+    Key_PageDown, ___,    ___,    ___,    ___,        ___,    ___,          Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
     /**/          /**/    /**/    ___,    Key_Delete, ___,    ___,          ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
     /**/          /**/    /**/    /**/    /**/        /**/    ___,          ___,        /**/    /**/       /**/       /**/        /**/           /**/
   ),[L_M]=KEYMAP(
@@ -219,7 +217,6 @@ void setup() {
     CHORD(Key_R, Key_S),        M(M_UP), // Colemak
     CHORD(Key_S, Key_D, Key_F), LCTRL(RBracket),
     CHORD(Key_R, Key_S, Key_T), LCTRL(RBracket), // Colemak
-    CHORD(Up, Right),           Win(Enter), // Fn + J + K = Fn + Enter
     CHORD(BkSpc, SpcBar),       LALT(LShift)
   )
 
