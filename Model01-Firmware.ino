@@ -195,6 +195,17 @@ void setup() {
 
     kaleidoscope::plugin::Qukey(0, KeyAddr(3, 6), Key_Backtick), // Left Palm
     kaleidoscope::plugin::Qukey(0, KeyAddr(3, 9), Key_Colon),    // Right Palm
+
+    kaleidoscope::plugin::Qukey(1, KeyAddr(0, 7), LBracket), // Left Thumb 0
+    kaleidoscope::plugin::Qukey(1, KeyAddr(2, 7), LBrace),   // Left Thumb 2
+    kaleidoscope::plugin::Qukey(1, KeyAddr(3, 7), LParen),   // Left Thumb 3
+
+    kaleidoscope::plugin::Qukey(1, KeyAddr(3, 8), RParen),   // Right Thumb 3
+    kaleidoscope::plugin::Qukey(1, KeyAddr(2, 8), RBrace),   // Right Thumb 2
+    kaleidoscope::plugin::Qukey(1, KeyAddr(0, 8), RBracket), // Right Thumb 0
+
+    kaleidoscope::plugin::Qukey(1, KeyAddr(3, 6), Key_Backtick), // Left Palm
+    kaleidoscope::plugin::Qukey(1, KeyAddr(3, 9), Key_Colon),    // Right Palm
   )
 
   CHORDS(
