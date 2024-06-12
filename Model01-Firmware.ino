@@ -18,7 +18,7 @@
 #include <Kaleidoscope-Chord.h>
 #include "macros.h"
 
-enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_F, M_G, M_UP }; // Macros
+enum { MACRO_NOP, QUINN, M_ESC, M_1, M_2, M_F, M_G, M_UP, M_ING }; // Macros
 #define KNOP M(MACRO_NOP)
 #define STL(l) ShiftToLayer(L_ ## l)
 #define MTL(l) MoveToLayer(L_ ## l)
@@ -170,6 +170,7 @@ const macro_t *macroAction(uint8_t macro_id, KeyEvent &event) {
     case M_F: MACRO_F; MAYBE_ENTER;
     case M_G: MACRO_G; MAYBE_ENTER;
     case M_UP: Macros.type(PSTR("../")); break;
+    case M_ING: Macros.type(PSTR("ing")); break;
   }
   return MACRO_NONE;
 }
@@ -224,7 +225,8 @@ void setup() {
     CHORD(Key_R, Key_S),        M(M_UP), // Colemak
     CHORD(Key_S, Key_D, Key_F), LCTRL(RBracket),
     CHORD(Key_R, Key_S, Key_T), LCTRL(RBracket), // Colemak
-    CHORD(BkSpc, SpcBar),       LALT(LShift)
+    CHORD(BkSpc, SpcBar),       LALT(LShift), 
+    CHORD(Key_I, Key_N),        M(M_ING),
   )
 
   Kaleidoscope.setup();
