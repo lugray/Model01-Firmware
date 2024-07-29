@@ -62,45 +62,50 @@ enum { L_PRIMARY, L_FN, L_M, L_QUINN, L_QFN }; // layers
 #define AM_MAKE_MAIN AM(Enter)
 #define AM_NEXT AM(J)
 #define AM_PREV AM(K)
+#define AM_TALL AM(A)
+#define AM_WIDE AM(S)
+#define AM_FULLSCREEN AM(D)
+#define AM_SMALLER AM(H)
+#define AM_BIGGER AM(L)
 
 constexpr Key KMod{kaleidoscope::ranges::SAFE_START};
 
 KEYMAPS(
   [L_PRIMARY]=KEYMAP(
-    Sleep,        Key_1,  Key_2,  Key_3,  Key_4,      Key_5,  AM_PREV,   AM_NEXT,    Key_6,  Key_7,     Key_8,     Key_9,      Key_0,         Key_Backslash,
-    Key_Backtick, Key_Q,  Key_W,  Key_E,  Key_R,      Key_T,  SpaceLeft, SpaceRight, Key_Y,  Key_U,     Key_I,     Key_O,      Key_P,         Key_Equals,
-    Key_Home,     Key_A,  Key_S,  Key_D,  Key_F,      Key_G,  /**/       /**/        Key_H,  Key_J,     Key_K,     Key_L,      Key_Colon, Key_Quote,
-    Key_End,      Key_Z,  Key_X,  Key_C,  Key_V,      Key_B,  LAlt,      Underscore, Key_N,  Key_M,     Key_Comma, Key_Period, Key_Slash,     Key_Minus,
-    /**/          /**/    /**/    LCtrl,  BkSpc,      LCmd,   LShift,    RShift,     RCmd,   SpcBar,    RCtrl,     /**/        /**/           /**/
-    /**/          /**/    /**/    /**/    /**/        /**/    STL(FN),   STL(FN)     /**/    /**/       /**/       /**/        /**/           /**/
+    Sleep,        Key_1,   Key_2,   Key_3,         Key_4,      Key_5,  AM_PREV,   AM_NEXT,    Key_6,      Key_7,     Key_8,     Key_9,      Key_0,     Key_Backslash,
+    Key_Backtick, Key_Q,   Key_W,   Key_E,         Key_R,      Key_T,  SpaceLeft, SpaceRight, Key_Y,      Key_U,     Key_I,     Key_O,      Key_P,     Key_Equals,
+    Key_Home,     Key_A,   Key_S,   Key_D,         Key_F,      Key_G,  /**/       /**/        Key_H,      Key_J,     Key_K,     Key_L,      Key_Colon, Key_Quote,
+    Key_End,      Key_Z,   Key_X,   Key_C,         Key_V,      Key_B,  LAlt,      Underscore, Key_N,      Key_M,     Key_Comma, Key_Period, Key_Slash, Key_Minus,
+    /**/          /**/     /**/     LCtrl,         BkSpc,      LCmd,   LShift,    RShift,     RCmd,       SpcBar,    RCtrl,     /**/        /**/       /**/
+    /**/          /**/     /**/     /**/           /**/        /**/    STL(FN),   STL(FN)     /**/        /**/       /**/       /**/        /**/       /**/
   ),[L_FN]=KEYMAP(
-    Key_NoKey,    Key_F1, Key_F2, Key_F3, Key_F4,     Key_F5, M(QUINN),  LEDNext,    Key_F6, Key_F7,    Key_F8,    Key_F9,     Key_F10,       Key_F11,
-    ___,          ___,    ___,    ___,    ___,        ___,    TabLeft,   TabRight,   ___,    AM_NEXT,   AM_PREV,   ___,        ___,           Key_F12,
-    Key_PageUp,   ___,    ___,    ___,    ___,        ___,    /**/       /**/        Left,   Down,      Up,        Right,      ___,           TOPSY(Quote),
-    Key_PageDown, ___,    ___,    ___,    ___,        ___,    ___,       Key_Minus,  ___,    Mute,      VolDown,   VolUp,      Pipe,          STL(M),
-    /**/          /**/    /**/    ___,    Key_Delete, ___,    ___,       ___,        ___,    Key_Enter, ___,       /**/        /**/           /**/
-    /**/          /**/    /**/    /**/    /**/        /**/    ___,       ___,        /**/    /**/       /**/       /**/        /**/           /**/
+    Key_NoKey,    Key_F1,  Key_F2,  Key_F3,        Key_F4,     Key_F5, M(QUINN),  LEDNext,    Key_F6,     Key_F7,    Key_F8,    Key_F9,     Key_F10,   Key_F11,
+    ___,          ___,     ___,     ___,           ___,        ___,    TabLeft,   TabRight,   AM_SMALLER, AM_NEXT,   AM_PREV,   AM_BIGGER,  ___,       Key_F12,
+    Key_PageUp,   AM_TALL, AM_WIDE, AM_FULLSCREEN, ___,        ___,    /**/       /**/        Left,       Down,      Up,        Right,      ___,       TOPSY(Quote),
+    Key_PageDown, ___,     ___,     ___,           ___,        ___,    ___,       Key_Minus,  ___,        Mute,      VolDown,   VolUp,      Pipe,      STL(M),
+    /**/          /**/     /**/     ___,           Key_Delete, ___,    ___,       ___,        ___,        Key_Enter, ___,       /**/        /**/       /**/
+    /**/          /**/     /**/     /**/           /**/        /**/    ___,       ___,        /**/        /**/       /**/       /**/        /**/       /**/
   ),[L_M]=KEYMAP(
-    M(M_ESC),     M(M_1), M(M_2), ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    M(M_F),     M(M_G), /**/       /**/        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        KMod,          ___,
-    /**/          /**/    /**/    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/    /**/    /**/    /**/        /**/    ___,       ___         /**/    /**/       /**/       /**/        /**/           /**/
+    M(M_ESC),     M(M_1),  M(M_2),  ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       ___,        ___,       ___,
+    ___,          ___,     ___,     ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       ___,        ___,       ___,
+    ___,          ___,     ___,     ___,           M(M_F),     M(M_G), /**/       /**/        ___,        ___,       ___,       ___,        ___,       ___,
+    ___,          ___,     ___,     ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       ___,        KMod,      ___,
+    /**/          /**/     /**/     ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       /**/        /**/       /**/
+    /**/          /**/     /**/     /**/           /**/        /**/    ___,       ___         /**/        /**/       /**/       /**/        /**/       /**/
   ),[L_QUINN]=KEYMAP(
-    KNOP,         KNOP,   KNOP,   KNOP,   KNOP,       KNOP,   KNOP,      KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,   KNOP,   KNOP,   KNOP,       KNOP,   KNOP,      KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,   KNOP,   KNOP,   KNOP,       KNOP,   /**/       /**/        KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    KNOP,         KNOP,   KNOP,   KNOP,   KNOP,       KNOP,   KNOP,      KNOP,       KNOP,   KNOP,      KNOP,      KNOP,       KNOP,          KNOP,
-    /**/          /**/    /**/    KNOP,   KNOP,       KNOP,   KNOP,      KNOP,       KNOP,   KNOP,      KNOP,      /**/        /**/           /**/
-    /**/          /**/    /**/    /**/    /**/        /**/    STL(QFN),  STL(QFN)    /**/    /**/       /**/       /**/        /**/           /**/
+    KNOP,         KNOP,    KNOP,    KNOP,          KNOP,       KNOP,   KNOP,      KNOP,       KNOP,       KNOP,      KNOP,      KNOP,       KNOP,      KNOP,
+    KNOP,         KNOP,    KNOP,    KNOP,          KNOP,       KNOP,   KNOP,      KNOP,       KNOP,       KNOP,      KNOP,      KNOP,       KNOP,      KNOP,
+    KNOP,         KNOP,    KNOP,    KNOP,          KNOP,       KNOP,   /**/       /**/        KNOP,       KNOP,      KNOP,      KNOP,       KNOP,      KNOP,
+    KNOP,         KNOP,    KNOP,    KNOP,          KNOP,       KNOP,   KNOP,      KNOP,       KNOP,       KNOP,      KNOP,      KNOP,       KNOP,      KNOP,
+    /**/          /**/     /**/     KNOP,          KNOP,       KNOP,   KNOP,      KNOP,       KNOP,       KNOP,      KNOP,      /**/        /**/       /**/
+    /**/          /**/     /**/     /**/           /**/        /**/    STL(QFN),  STL(QFN)    /**/        /**/       /**/       /**/        /**/       /**/
   ),[L_QFN]=KEYMAP(
-    ___,          ___,    ___,    ___,    ___,        ___,    M(QUINN),  ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    /**/       /**/        ___,    ___,       ___,       ___,        ___,           ___,
-    ___,          ___,    ___,    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       ___,        ___,           ___,
-    /**/          /**/    /**/    ___,    ___,        ___,    ___,       ___,        ___,    ___,       ___,       /**/        /**/           /**/
-    /**/          /**/    /**/    /**/    /**/        /**/    ___,       ___         /**/    /**/       /**/       /**/        /**/           /**/
+    ___,          ___,     ___,     ___,           ___,        ___,    M(QUINN),  ___,        ___,        ___,       ___,       ___,        ___,       ___,
+    ___,          ___,     ___,     ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       ___,        ___,       ___,
+    ___,          ___,     ___,     ___,           ___,        ___,    /**/       /**/        ___,        ___,       ___,       ___,        ___,       ___,
+    ___,          ___,     ___,     ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       ___,        ___,       ___,
+    /**/          /**/     /**/     ___,           ___,        ___,    ___,       ___,        ___,        ___,       ___,       /**/        /**/       /**/
+    /**/          /**/     /**/     /**/           /**/        /**/    ___,       ___         /**/        /**/       /**/       /**/        /**/       /**/
   )
 )
 
